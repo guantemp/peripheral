@@ -26,5 +26,5 @@ package cc.foxtail.peripheral;
  */
 
 public interface Demo {
-	void demo();
+    void demo();
 }

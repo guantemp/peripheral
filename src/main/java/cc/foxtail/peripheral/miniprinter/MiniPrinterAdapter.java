@@ -17,186 +17,186 @@
  */
 package cc.foxtail.peripheral.miniprinter;
 
-import java.awt.Dimension;
-import java.awt.image.BufferedImage;
-import java.util.Set;
-
 import cc.foxtail.peripheral.util.Align;
+
+import java.awt.*;
+import java.awt.image.*;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:myis1000@gmail.com">guan xiangHuan</a>
- * @since JDK6.0
  * @version 0.0.1 2014年10月9日
+ * @since JDK6.0
  */
 public class MiniPrinterAdapter implements MiniPrinter {
 
-	@Override
-	public void demo() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void demo() {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void close() {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	@Override
-	public void cutPaper() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void close() {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void downloadBitmapToFlash(BufferedImage img) {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	@Override
-	public boolean isPaperOut() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public void cutPaper() {
+        // TODO Auto-generated method stub
 
-	@Override
-	public boolean isPrinterBusy() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    }
 
-	@Override
-	public boolean isPrinterError() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public void downloadBitmapToFlash(BufferedImage img) {
+        // TODO Auto-generated method stub
 
-	@Override
-	public boolean isPrinterTimedOut() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    }
 
-	@Override
-	public boolean isSupportBarcode() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean isPaperOut() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public boolean isSupportCutPaper() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean isPrinterBusy() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public boolean isSupportFlashBitmap() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean isPrinterError() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public Dimension maxFlashBitmapSize() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public boolean isPrinterTimedOut() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public String name() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public boolean isSupportBarcode() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public void openCashBox() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public boolean isSupportCutPaper() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public void print(String s) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public boolean isSupportFlashBitmap() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public void print(String s, Align align) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public Dimension maxFlashBitmapSize() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public void print(String s, Align align, Set<PrintMode> style) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public String name() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public void print(String s, int offset) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void openCashBox() {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void print(String s, int offset, Set<PrintMode> style) {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	@Override
-	public void printBitmapInFlash(int id) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void print(String s) {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void print(DividingLine line) {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	@Override
-	public void println() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void print(String s, Align align) {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void println(BufferedImage img) {
-		// TODO Auto-generated method stub
-		
-	}
+    }
+
+    @Override
+    public void print(String s, Align align, Set<PrintMode> style) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void print(String s, int offset) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void print(String s, int offset, Set<PrintMode> style) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void printBitmapInFlash(int id) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void print(DividingLine line) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void println() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void println(BufferedImage img) {
+        // TODO Auto-generated method stub
+
+    }
 
 
-	@Override
-	public void println(String s) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void println(String s) {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void println(String s, Align align, Set<PrintMode> style) {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	@Override
-	public void println(String s, int offset, Set<PrintMode> style) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void println(String s, Align align, Set<PrintMode> style) {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void rest() {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	@Override
-	public void print(int barcodeTypes, int height, int nHriFontPosition,
-			String value) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void println(String s, int offset, Set<PrintMode> style) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void rest() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void print(int barcodeTypes, int height, int nHriFontPosition,
+                      String value) {
+        // TODO Auto-generated method stub
+
+    }
 }

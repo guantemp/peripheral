@@ -17,98 +17,95 @@
  */
 package cc.foxtail.peripheral.miniprinter;
 
-import java.awt.Dimension;
-import java.awt.image.BufferedImage;
-import java.util.Set;
-
 import cc.foxtail.peripheral.Demo;
 import cc.foxtail.peripheral.util.Align;
 
+import java.awt.*;
+import java.awt.image.*;
+import java.util.Set;
+
 /**
  * @author <a href="mailto:myis1000@gmail.com">guan xiangHuan</a>
- * @since JDK7.0
  * @version 0.0.1 2013年11月28日
+ * @since JDK7.0
  */
 public interface MiniPrinter extends Demo {
-	public enum DividingLine {
-		ASTERISK, HORIZONTAL_LINE
-	}
+    public enum DividingLine {
+        ASTERISK, HORIZONTAL_LINE
+    }
 
-	public enum PrintMode {
-		DOUBLE_HEIGHT, DOUBLE_WIDTH, QUADRUPLE, REVERSE, THICK_UNDERLINE, THIN_UNDERLINE, UPSIDEDOWN, WHIRL
-	}
+    public enum PrintMode {
+        DOUBLE_HEIGHT, DOUBLE_WIDTH, QUADRUPLE, REVERSE, THICK_UNDERLINE, THIN_UNDERLINE, UPSIDEDOWN, WHIRL
+    }
 
-	/**
-	 * Closes this output stream and releases any system resources associated
-	 * with this stream
-	 */
-	void close();
+    /**
+     * Closes this output stream and releases any system resources associated
+     * with this stream
+     */
+    void close();
 
-	/**
-	 * @return
-	 */
-	void cutPaper();
+    /**
+     * @return
+     */
+    void cutPaper();
 
-	void downloadBitmapToFlash(BufferedImage img);
+    void downloadBitmapToFlash(BufferedImage img);
 
-	boolean isPaperOut();
+    boolean isPaperOut();
 
-	boolean isPrinterBusy();
+    boolean isPrinterBusy();
 
-	boolean isPrinterError();
+    boolean isPrinterError();
 
-	boolean isPrinterTimedOut();
+    boolean isPrinterTimedOut();
 
-	boolean isSupportBarcode();
+    boolean isSupportBarcode();
 
-	boolean isSupportCutPaper();
+    boolean isSupportCutPaper();
 
-	boolean isSupportFlashBitmap();
+    boolean isSupportFlashBitmap();
 
-	Dimension maxFlashBitmapSize();
+    Dimension maxFlashBitmapSize();
 
-	String name();
+    String name();
 
-	void openCashBox();
+    void openCashBox();
 
-	void print(DividingLine line);
+    void print(DividingLine line);
 
-	/**
-	 * @param barcodeTypes
-	 *            supports UPC-A, UPC-E, EAN13, EAN8, CODE39, CODE93, CODE128,
-	 *            ITF
-	 * @param height
-	 *            barcode height default is 162, range is 1-255
-	 * @param nHriFontPosition
-	 *            HRI character position ,0 does not print, a printed above the
-	 *            bar code, the bar code printed below 2, 3 are printed on the
-	 *            bottom, the default does not print
-	 * @param value
-	 */
-	void print(int barcodeTypes, int height, int nHriFontPosition, String value);
+    /**
+     * @param barcodeTypes     supports UPC-A, UPC-E, EAN13, EAN8, CODE39, CODE93, CODE128,
+     *                         ITF
+     * @param height           barcode height default is 162, range is 1-255
+     * @param nHriFontPosition HRI character position ,0 does not print, a printed above the
+     *                         bar code, the bar code printed below 2, 3 are printed on the
+     *                         bottom, the default does not print
+     * @param value
+     */
+    void print(int barcodeTypes, int height, int nHriFontPosition, String value);
 
-	void print(String s);
+    void print(String s);
 
-	void print(String s, Align align);
+    void print(String s, Align align);
 
-	void print(String s, Align align, Set<PrintMode> style);
+    void print(String s, Align align, Set<PrintMode> style);
 
-	void print(String s, int offset);
+    void print(String s, int offset);
 
-	void print(String s, int offset, Set<PrintMode> style);
+    void print(String s, int offset, Set<PrintMode> style);
 
-	void printBitmapInFlash(int id);
+    void printBitmapInFlash(int id);
 
-	void println();
+    void println();
 
-	void println(BufferedImage img);
+    void println(BufferedImage img);
 
-	void println(String s);
+    void println(String s);
 
-	void println(String s, Align align, Set<PrintMode> style);
+    void println(String s, Align align, Set<PrintMode> style);
 
-	void println(String s, int offset, Set<PrintMode> style);
+    void println(String s, int offset, Set<PrintMode> style);
 
-	void rest();
+    void rest();
 
 }

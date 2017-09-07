@@ -17,18 +17,12 @@
  */
 package cc.foxtail.peripheral.communication;
 
+
+import javax.bluetooth.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
-
-import javax.bluetooth.BluetoothStateException;
-import javax.bluetooth.DeviceClass;
-import javax.bluetooth.DiscoveryAgent;
-import javax.bluetooth.DiscoveryListener;
-import javax.bluetooth.LocalDevice;
-import javax.bluetooth.RemoteDevice;
-import javax.bluetooth.ServiceRecord;
 
 /***
  * @author <a href=
@@ -38,90 +32,90 @@ import javax.bluetooth.ServiceRecord;
  * @version 0.0.1 builder 20170415
  */
 public class Bluetooth {
-	public static String[] listBluetooth() throws BluetoothStateException, InterruptedException {
-		final Object inquiryCompletedEvent = new Object();
-		Map<String, String> devicesDiscovered = new HashMap<String, String>();
-		DiscoveryListener listener = new DiscoveryListener() {
+    public static String[] listBluetooth() throws BluetoothStateException, InterruptedException {
+        final Object inquiryCompletedEvent = new Object();
+        Map<String, String> devicesDiscovered = new HashMap<String, String>();
+        DiscoveryListener listener = new DiscoveryListener() {
 
-			@Override
-			public void deviceDiscovered(RemoteDevice remoteDevice, DeviceClass deviceClass) {
-				//devicesDiscovered.put(key, value)
+            @Override
+            public void deviceDiscovered(RemoteDevice remoteDevice, DeviceClass deviceClass) {
+                //devicesDiscovered.put(key, value)
 
-			}
+            }
 
-			@Override
-			public void inquiryCompleted(int arg0) {
-				synchronized (inquiryCompletedEvent) {
-					inquiryCompletedEvent.notifyAll();
-				}
-			}
+            @Override
+            public void inquiryCompleted(int arg0) {
+                synchronized (inquiryCompletedEvent) {
+                    inquiryCompletedEvent.notifyAll();
+                }
+            }
 
-			@Override
-			public void serviceSearchCompleted(int arg0, int arg1) {
-				// TODO Auto-generated method stub
+            @Override
+            public void serviceSearchCompleted(int arg0, int arg1) {
+                // TODO Auto-generated method stub
 
-			}
+            }
 
-			@Override
-			public void servicesDiscovered(int arg0, ServiceRecord[] arg1) {
-				// TODO Auto-generated method stub
+            @Override
+            public void servicesDiscovered(int arg0, ServiceRecord[] arg1) {
+                // TODO Auto-generated method stub
 
-			}
+            }
 
-		};
-		synchronized (inquiryCompletedEvent) {
-			boolean started = LocalDevice.getLocalDevice().getDiscoveryAgent().startInquiry(DiscoveryAgent.GIAC,
-					listener);
-			if (started) {
-				inquiryCompletedEvent.wait();
-			}
-		}
-		return null;
-	}
+        };
+        synchronized (inquiryCompletedEvent) {
+            boolean started = LocalDevice.getLocalDevice().getDiscoveryAgent().startInquiry(DiscoveryAgent.GIAC,
+                    listener);
+            if (started) {
+                inquiryCompletedEvent.wait();
+            }
+        }
+        return null;
+    }
 
-	public static final Vector<RemoteDevice> devicesDiscovered = new Vector();
+    public static final Vector<RemoteDevice> devicesDiscovered = new Vector();
 
-	public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
-		final Object inquiryCompletedEvent = new Object();
+        final Object inquiryCompletedEvent = new Object();
 
-		devicesDiscovered.clear();
+        devicesDiscovered.clear();
 
-		DiscoveryListener listener = new DiscoveryListener() {
+        DiscoveryListener listener = new DiscoveryListener() {
 
-			public void deviceDiscovered(RemoteDevice btDevice, DeviceClass cod) {
-				System.out.println("Device " + btDevice.getBluetoothAddress() + " found");
-				devicesDiscovered.addElement(btDevice);
-				try {
-					System.out.println("     name " + btDevice.getFriendlyName(false));
-				} catch (IOException cantGetDeviceName) {
-				}
-			}
+            public void deviceDiscovered(RemoteDevice btDevice, DeviceClass cod) {
+                System.out.println("Device " + btDevice.getBluetoothAddress() + " found");
+                devicesDiscovered.addElement(btDevice);
+                try {
+                    System.out.println("     name " + btDevice.getFriendlyName(false));
+                } catch (IOException cantGetDeviceName) {
+                }
+            }
 
-			public void inquiryCompleted(int discType) {
-				System.out.println("Device Inquiry completed!");
-				synchronized (inquiryCompletedEvent) {
-					inquiryCompletedEvent.notifyAll();
-				}
-			}
+            public void inquiryCompleted(int discType) {
+                System.out.println("Device Inquiry completed!");
+                synchronized (inquiryCompletedEvent) {
+                    inquiryCompletedEvent.notifyAll();
+                }
+            }
 
-			public void serviceSearchCompleted(int transID, int respCode) {
-			}
+            public void serviceSearchCompleted(int transID, int respCode) {
+            }
 
-			public void servicesDiscovered(int transID, ServiceRecord[] servRecord) {
-			}
-		};
+            public void servicesDiscovered(int transID, ServiceRecord[] servRecord) {
+            }
+        };
 
-		synchronized (inquiryCompletedEvent) {
-			boolean started = LocalDevice.getLocalDevice().getDiscoveryAgent().startInquiry(DiscoveryAgent.GIAC,
-					listener);
-			if (started) {
-				System.out.println("wait for device inquiry to complete...");
-				inquiryCompletedEvent.wait();
-				System.out.println(devicesDiscovered.size() + " device(s) found");
-				for (RemoteDevice btDevice : devicesDiscovered.toArray(new RemoteDevice[0]))
-					System.out.println(btDevice.getFriendlyName(false));
-			}
-		}
-	}
+        synchronized (inquiryCompletedEvent) {
+            boolean started = LocalDevice.getLocalDevice().getDiscoveryAgent().startInquiry(DiscoveryAgent.GIAC,
+                    listener);
+            if (started) {
+                System.out.println("wait for device inquiry to complete...");
+                inquiryCompletedEvent.wait();
+                System.out.println(devicesDiscovered.size() + " device(s) found");
+                for (RemoteDevice btDevice : devicesDiscovered.toArray(new RemoteDevice[0]))
+                    System.out.println(btDevice.getFriendlyName(false));
+            }
+        }
+    }
 }

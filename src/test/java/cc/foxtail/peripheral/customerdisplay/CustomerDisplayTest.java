@@ -17,37 +17,32 @@
  */
 package cc.foxtail.peripheral.customerdisplay;
 
+import cc.foxtail.peripheral.communication.RS232;
 import gnu.io.NoSuchPortException;
 import gnu.io.PortInUseException;
 import gnu.io.UnsupportedCommOperationException;
+import junit.framework.TestCase;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.util.TooManyListenersException;
 
-import junit.framework.TestCase;
-
-import org.junit.Test;
-
-import cc.foxtail.peripheral.communication.RS232;
-import cc.foxtail.peripheral.customerdisplay.CustomerDisplay;
-import cc.foxtail.peripheral.customerdisplay.StandardLed;
-
 /**
  * @author <a href="mailto:myis1000@gmail.com">guan xiangHuan</a>
- * @since JDK6.0
  * @version 0.0.1 2014年5月20日
+ * @since JDK6.0
  */
 public class CustomerDisplayTest extends TestCase {
-	@Test
-	public void testDemo() throws InterruptedException, NoSuchPortException, PortInUseException,
-			UnsupportedCommOperationException, TooManyListenersException, IOException {
-		for (String s : RS232.listAllSerialPort())
-			System.out.print(s + " ");
-		System.out.println();
-		for (String s : RS232.listAvailableSerialPort())
-			System.out.print(s + " ");
-		RS232 serial = new RS232("COM6", 2400, 8, 1, 0);
-		CustomerDisplay customerDisplay = new StandardLed(serial, "gb2312");
-		customerDisplay.demo();
-	}
+    @Test
+    public void testDemo() throws InterruptedException, NoSuchPortException, PortInUseException,
+            UnsupportedCommOperationException, TooManyListenersException, IOException {
+        for (String s : RS232.listAllSerialPort())
+            System.out.print(s + " ");
+        System.out.println();
+        for (String s : RS232.listAvailableSerialPort())
+            System.out.print(s + " ");
+        RS232 serial = new RS232("COM6", 2400, 8, 1, 0);
+        CustomerDisplay customerDisplay = new StandardLed(serial, "gb2312");
+        customerDisplay.demo();
+    }
 }

@@ -19,11 +19,11 @@ package cc.foxtail.peripheral.util;
 
 /**
  * Set string alignment
- * 
+ *
  * @author <a href="mailto:myis1000@gmail.com">guan xiangHuan</a>
- * @since JDK6.0
  * @version 0.0.1 2013年11月15日
+ * @since JDK6.0
  */
 public enum Align {
-	BOTTOM, BOTTOM_TO_TOP, CENTER, LEFT, LEFT_TO_RIGHT, NONE, RIGHT, RIGHT_TO_LEFT, SCROLL, TOP, TOP_TO_BOTTOM;
+    BOTTOM, BOTTOM_TO_TOP, CENTER, LEFT, LEFT_TO_RIGHT, NONE, RIGHT, RIGHT_TO_LEFT, SCROLL, TOP, TOP_TO_BOTTOM;
 }

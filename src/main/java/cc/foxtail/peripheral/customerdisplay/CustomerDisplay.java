@@ -17,110 +17,108 @@
  */
 package cc.foxtail.peripheral.customerdisplay;
 
-import java.util.Set;
-
 import cc.foxtail.peripheral.Demo;
 import cc.foxtail.peripheral.util.Align;
+
+import java.util.Set;
 
 /**
  * Connect customer display and displays status and data, for some pole display
  * will be able to display the product name and display advertising language
  * <p>
- * 
+ *
  * @author <a href="mailto:myis1000@gmail.com">guan xiangHuan</a>
- * @since JDK6.0
  * @version 0.0.1 2013年11月6日
+ * @since JDK6.0
  */
 public interface CustomerDisplay extends Demo {
 
-	/**
-	 * Now supports up to 4 lines
-	 * 
-	 */
-	enum Y_axis {
-		FOUR, ONE, THREE, TWO;
-	}
+    /**
+     * Now supports up to 4 lines
+     */
+    enum Y_axis {
+        FOUR, ONE, THREE, TWO;
+    }
 
-	/**
-	 * @param level
-	 *            1-5
-	 */
-	void adjustBrightness(int level);
+    /**
+     * @param level 1-5
+     */
+    void adjustBrightness(int level);
 
-	/**
-	 * clear all show
-	 */
-	void clear();
+    /**
+     * clear all show
+     */
+    void clear();
 
-	/**
-	 * close port
-	 */
-	void close();
+    /**
+     * close port
+     */
+    void close();
 
-	/**
-	 * Initialization
-	 */
-	void init();
+    /**
+     * Initialization
+     */
+    void init();
 
-	/**
-	 * Open the box
-	 */
-	void openCashBox();
+    /**
+     * Open the box
+     */
+    void openCashBox();
 
-	/**
-	 * Keep the change
-	 * 
-	 * @param chang
-	 */
-	void showChange(double chang);
+    /**
+     * Keep the change
+     *
+     * @param chang
+     */
+    void showChange(double chang);
 
-	/**
-	 * Upper left corner of (0.0), the x-axis y-axis position display
-	 * information specified
-	 * 
-	 * @param x
-	 * @param y_axis
-	 * @param align
-	 * @param info
-	 */
-	void showInfo(int x, Set<Y_axis> y_axis, Align align, String info);
+    /**
+     * Upper left corner of (0.0), the x-axis y-axis position display
+     * information specified
+     *
+     * @param x
+     * @param y_axis
+     * @param align
+     * @param info
+     */
+    void showInfo(int x, Set<Y_axis> y_axis, Align align, String info);
 
-	/**
-	 * @param x
-	 * @param y_axis
-	 * @param info
-	 */
-	void showInfo(int x, Set<Y_axis> y_axis, String info);
+    /**
+     * @param x
+     * @param y_axis
+     * @param info
+     */
+    void showInfo(int x, Set<Y_axis> y_axis, String info);
 
-	/**
-	 * Actual receipts
-	 * 
-	 * @param cash
-	 */
-	void showPaid(double paid);
+    /**
+     * Actual receipts
+     *
+     * @param cash
+     */
+    void showPaid(double paid);
 
-	/**
-	 * @param quantity
-	 */
-	void showQuantity(double quantity);
+    /**
+     * @param quantity
+     */
+    void showQuantity(double quantity);
 
-	/**
-	 * Total
-	 * 
-	 * @param total
-	 */
-	void showTotal(double total);
+    /**
+     * Total
+     *
+     * @param total
+     */
+    void showTotal(double total);
 
-	/**
-	 * Unit price
-	 * 
-	 * @param price
-	 * @param number
-	 */
-	void showUnitPrice(double price);
+    /**
+     * Unit price
+     *
+     * @param price
+     * @param number
+     */
+    void showUnitPrice(double price);
 
-	/**
-	 * @return
-	 */
-	boolean isSupportShowInfo();
+    /**
+     * @return
+     */
+    boolean isSupportShowInfo();
 }

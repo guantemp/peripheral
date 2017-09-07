@@ -17,58 +17,54 @@
  */
 package cc.foxtail.peripheral.communication;
 
+import cc.foxtail.peripheral.miniprinter.ZJ_5890T;
 import gnu.io.NoSuchPortException;
 import gnu.io.PortInUseException;
+import org.junit.Test;
 
-import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.awt.image.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.TooManyListenersException;
 
-import javax.imageio.ImageIO;
-
-import org.junit.Test;
-
-import cc.foxtail.peripheral.communication.Parallel;
-import cc.foxtail.peripheral.miniprinter.ZJ_5890T;
-
 /**
  * @author <a href="mailto:myis1000@gmail.com">guan xiangHuan</a>
- * @since JDK6.0
  * @version 0.0.1 2014年10月14日
+ * @since JDK6.0
  */
 public class ZJ_5890TTest {
 
-	@Test
-	public void testDownloadBitmapToFlash() throws IOException, NoSuchPortException, PortInUseException, TooManyListenersException {
-		Parallel parallel = new Parallel("LPT2", 500);
-		ZJ_5890T zj = null;
-		try {
-			zj = new ZJ_5890T(parallel, "gbk");
-			BufferedImage image = ImageIO.read(new File("d:/mvn/look.bmp"));
-			zj.downloadBitmapToFlash(image);
-		} finally {
-			if (zj != null)
-				zj.close();
-		}
-	}
+    @Test
+    public void testDownloadBitmapToFlash() throws IOException, NoSuchPortException, PortInUseException, TooManyListenersException {
+        Parallel parallel = new Parallel("LPT2", 500);
+        ZJ_5890T zj = null;
+        try {
+            zj = new ZJ_5890T(parallel, "gbk");
+            BufferedImage image = ImageIO.read(new File("d:/mvn/look.bmp"));
+            zj.downloadBitmapToFlash(image);
+        } finally {
+            if (zj != null)
+                zj.close();
+        }
+    }
 
-	@Test
-	public void testPrintBitmapInFlash() throws NoSuchPortException, PortInUseException, TooManyListenersException {
-		Parallel parallel = new Parallel("LPT2", 500);
-		ZJ_5890T zj = new ZJ_5890T(parallel, "gbk");
-		zj.printBitmapInFlash(1);
-		zj.close();
-	}
+    @Test
+    public void testPrintBitmapInFlash() throws NoSuchPortException, PortInUseException, TooManyListenersException {
+        Parallel parallel = new Parallel("LPT2", 500);
+        ZJ_5890T zj = new ZJ_5890T(parallel, "gbk");
+        zj.printBitmapInFlash(1);
+        zj.close();
+    }
 
-	@Test
-	public void testStringPrint() throws IOException, NoSuchPortException, PortInUseException, TooManyListenersException {
-		Parallel parallel = new Parallel("LPT2", 500);
-		ZJ_5890T zj = new ZJ_5890T(parallel, "GB2312");
-		//zj.textOut("字体不对吗", Align.CENTER, EnumSet.of(FontStyle.QUADRUPLE))
-				//.textOut("正常字体测试没有看见你")
-				//.textOut("我在偏移", 236, EnumSet.noneOf(FontStyle.class)).wrap(2);
-		//zj.print();
-		zj.close();
-	}
+    @Test
+    public void testStringPrint() throws IOException, NoSuchPortException, PortInUseException, TooManyListenersException {
+        Parallel parallel = new Parallel("LPT2", 500);
+        ZJ_5890T zj = new ZJ_5890T(parallel, "GB2312");
+        //zj.textOut("字体不对吗", Align.CENTER, EnumSet.of(FontStyle.QUADRUPLE))
+        //.textOut("正常字体测试没有看见你")
+        //.textOut("我在偏移", 236, EnumSet.noneOf(FontStyle.class)).wrap(2);
+        //zj.print();
+        zj.close();
+    }
 }
