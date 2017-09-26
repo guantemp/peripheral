@@ -19,6 +19,11 @@ package cc.foxtail.peripheral.communication;
 
 import org.usb4java.*;
 
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+
+import static javax.bluetooth.BluetoothConnectionException.TIMEOUT;
+
 /***
  * @author <a href=
  *         "mailto:myis1000@126.com?subject=about%20cc.foxtail.peripheral.communication.Usb.java">guan
@@ -66,8 +71,63 @@ public class Usb {
             LibUsb.freeDeviceList(list, true);
         }
 
+
+        //begian
+        Device device = findDevice((short) 0x0416, (short) 0x5011);
+        DeviceHandle handle = LibUsb.openDeviceWithVidPid(context, (short) 0x0416, (short) 0x5011);
+        result = LibUsb.open(device, handle);
+        if (result != LibUsb.SUCCESS) throw new LibUsbException("Unable to open USB device", result);
+        try {
+            // write(handle,"正常字体测试没有看见你".getBytes("GB2312"));
+            // } catch (UnsupportedEncodingException e) {
+            //     e.printStackTrace();
+        } finally {
+            LibUsb.close(handle);
+        }
+        System.out.println("device:" + device);
         // Deinitialize the libusb context
         LibUsb.exit(context);
         System.out.println("time：" + (System.currentTimeMillis() - start));
+    }
+
+
+    public static void write(DeviceHandle handle, byte[] data) {
+        ByteBuffer buffer = BufferUtils.allocateByteBuffer(data.length);
+        buffer.put(data);
+        IntBuffer transferred = BufferUtils.allocateIntBuffer();
+        int result = LibUsb.bulkTransfer(handle, (byte) 0x03, buffer,
+                transferred, TIMEOUT);
+        if (result != LibUsb.SUCCESS) {
+            throw new LibUsbException("Unable to send data", result);
+        }
+        System.out.println(transferred.get() + " bytes sent to device");
+    }
+
+    public static Device findDevice(short vendorId, short productId) {
+        // Create the libusb context
+        Context context = new Context();
+
+        // Initialize the libusb context
+        LibUsb.init(context);
+        // Read the USB device list
+        DeviceList list = new DeviceList();
+        int result = LibUsb.getDeviceList(context, list);
+        if (result < 0) throw new LibUsbException("Unable to get device list", result);
+
+        try {
+            // Iterate over all devices and scan for the right one
+            for (Device device : list) {
+                DeviceDescriptor descriptor = new DeviceDescriptor();
+                result = LibUsb.getDeviceDescriptor(device, descriptor);
+                if (result != LibUsb.SUCCESS) throw new LibUsbException("Unable to read device descriptor", result);
+                if (descriptor.idVendor() == vendorId && descriptor.idProduct() == productId) return device;
+            }
+        } finally {
+            // Ensure the allocated device list is freed
+            LibUsb.freeDeviceList(list, true);
+        }
+
+        // Device not found
+        return null;
     }
 }
