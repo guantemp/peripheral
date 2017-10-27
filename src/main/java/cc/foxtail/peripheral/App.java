@@ -1,6 +1,6 @@
 package cc.foxtail.peripheral;
 
-import cc.foxtail.peripheral.communication.RS232;
+import cc.foxtail.peripheral.communication.Serial;
 import cc.foxtail.peripheral.customerdisplay.CustomerDisplay;
 import cc.foxtail.peripheral.customerdisplay.StandardLed;
 import gnu.io.*;
@@ -15,28 +15,13 @@ public class App {
 
     public static void main(String[] args) throws Exception {
         long start = System.currentTimeMillis();
-        RS232 serial = null;
+        Serial serial = null;
         try {
-            serial = new RS232("COM6", 2400, SerialPort.DATABITS_8,
-                    SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+            serial = new Serial("COM6", 2400, SerialPort.DATABITS_8,
+                    SerialPort.STOPBITS_1, SerialPort.PARITY_NONE,50,100);
             CustomerDisplay customerDisplay = new StandardLed(serial,
                     "gb2312");
             customerDisplay.demo();
-        } catch (NoSuchPortException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (PortInUseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (UnsupportedCommOperationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (TooManyListenersException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         } finally {
             serial.close();
         }

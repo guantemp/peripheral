@@ -17,12 +17,14 @@
  */
 package cc.foxtail.peripheral.customerdisplay;
 
-import cc.foxtail.peripheral.communication.RS232;
+import cc.foxtail.peripheral.communication.Serial;
+import gnu.io.NoSuchPortException;
+import gnu.io.PortInUseException;
+import gnu.io.UnsupportedCommOperationException;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.Writer;
+import java.util.Objects;
+import java.util.TooManyListenersException;
 import java.util.regex.Pattern;
 
 /**
@@ -41,35 +43,38 @@ public class StandardLed extends CustomerDisplayAdapter {
     private static final char SHOW_END = 0x0d;
     private static final char[] SHOW_START = {0x1b, 0x51, 0x41};
     private static final char[] TOTAL = {0x1b, 0x73, 0x32};
-    private RS232 rs232;
-    private Writer writer;
+    private Serial serial;
 
-    public StandardLed(RS232 rs232, String encoding) {
-        if (rs232 == null)
-            throw new IllegalArgumentException("Rs232 must not be NULL");
+    public StandardLed(Serial serial, String encoding) {
         if (encoding == null || !PATTERN.matcher(encoding).matches())
             throw new IllegalArgumentException(
                     "Encoding must be (GB|gb)2312|(BIG|big)5|(UTF|utf)-8|(GBK|gbk)|(UTF|utf)-16");
-        this.rs232 = rs232;
+        this.serial = Objects.requireNonNull(serial, "rs232 is required");
         try {
-            writer = new PrintWriter(new OutputStreamWriter(
-                    rs232.openOutputStream(), encoding));
-        } catch (IOException e) {
+            serial.open();
+        } catch (NoSuchPortException e) {
             throw new RuntimeException(
                     "Comm port not init,customer display will not show", e);
+        } catch (PortInUseException e) {
+            e.printStackTrace();
+        } catch (UnsupportedCommOperationException e) {
+            e.printStackTrace();
+        } catch (TooManyListenersException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void close() {
-        rs232.close();
+        serial.close();
     }
 
     @Override
     public void init() {
         try {
-            writer.write(INIT);
-            writer.flush();
+            serial.write(INIT);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -80,8 +85,7 @@ public class StandardLed extends CustomerDisplayAdapter {
     @Override
     public void openCashBox() {
         try {
-            writer.write(OPEN_BOX);
-            writer.flush();
+            serial.write(OPEN_BOX);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -91,11 +95,10 @@ public class StandardLed extends CustomerDisplayAdapter {
     @Override
     public void showChange(double chang) {
         try {
-            writer.write(CHANG);
-            writer.write(SHOW_START);
-            writer.write(String.valueOf(chang));
-            writer.write(SHOW_END);
-            writer.flush();
+            serial.write(CHANG);
+            serial.write(SHOW_START);
+            serial.write(String.valueOf(chang));
+            serial.write(SHOW_END);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -105,11 +108,10 @@ public class StandardLed extends CustomerDisplayAdapter {
     @Override
     public void showPaid(double paid) {
         try {
-            writer.write(PAID);
-            writer.write(SHOW_START);
-            writer.write(String.valueOf(paid));
-            writer.write(SHOW_END);
-            writer.flush();
+            serial.write(PAID);
+            serial.write(SHOW_START);
+            serial.write(String.valueOf(paid));
+            serial.write(SHOW_END);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -119,11 +121,10 @@ public class StandardLed extends CustomerDisplayAdapter {
     @Override
     public void showTotal(double total) {
         try {
-            writer.write(TOTAL);
-            writer.write(SHOW_START);
-            writer.write(String.valueOf(total));
-            writer.write(SHOW_END);
-            writer.flush();
+            serial.write(TOTAL);
+            serial.write(SHOW_START);
+            serial.write(String.valueOf(total));
+            serial.write(SHOW_END);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -133,11 +134,10 @@ public class StandardLed extends CustomerDisplayAdapter {
     @Override
     public void showUnitPrice(double price) {
         try {
-            writer.write(PRICE);
-            writer.write(SHOW_START);
-            writer.write(String.valueOf(price));
-            writer.write(SHOW_END);
-            writer.flush();
+            serial.write(PRICE);
+            serial.write(SHOW_START);
+            serial.write(String.valueOf(price));
+            serial.write(SHOW_END);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

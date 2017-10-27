@@ -24,7 +24,7 @@ import gnu.io.NoSuchPortException;
 import gnu.io.PortInUseException;
 
 import java.awt.*;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
@@ -39,8 +39,8 @@ import java.util.regex.Pattern;
 public class ZJ_5890T extends MiniPrinterAdapter {
     private static final Pattern PATTERN = Pattern
             .compile("(GB|gb)2312|(BIG|big)5|(UTF|utf)-8|(GBK|gbk)|(UTF|utf)-16");
-    private BufferedOutputStream bos;
     private final String encoding;
+    private BufferedOutputStream bos;
     private Parallel parallel;
 
     public ZJ_5890T(Parallel parallel) {

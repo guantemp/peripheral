@@ -17,7 +17,7 @@
  */
 package cc.foxtail.peripheral.customerdisplay;
 
-import cc.foxtail.peripheral.communication.RS232;
+import cc.foxtail.peripheral.communication.Serial;
 import gnu.io.NoSuchPortException;
 import gnu.io.PortInUseException;
 import gnu.io.UnsupportedCommOperationException;
@@ -36,12 +36,12 @@ public class CustomerDisplayTest extends TestCase {
     @Test
     public void testDemo() throws InterruptedException, NoSuchPortException, PortInUseException,
             UnsupportedCommOperationException, TooManyListenersException, IOException {
-        for (String s : RS232.listAllSerialPort())
+        for (String s : Serial.listAllSerialPort())
             System.out.print(s + " ");
         System.out.println();
-        for (String s : RS232.listAvailableSerialPort())
+        for (String s : Serial.listAvailableSerialPort())
             System.out.print(s + " ");
-        RS232 serial = new RS232("COM6", 2400, 8, 1, 0);
+        Serial serial = new Serial("COM6", 2400, 8, 1, 0,50,100);
         CustomerDisplay customerDisplay = new StandardLed(serial, "gb2312");
         customerDisplay.demo();
     }

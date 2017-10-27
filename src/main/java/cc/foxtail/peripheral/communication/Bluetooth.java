@@ -32,6 +32,8 @@ import java.util.Vector;
  * @version 0.0.1 builder 20170415
  */
 public class Bluetooth {
+    public static final Vector<RemoteDevice> devicesDiscovered = new Vector();
+
     public static String[] listBluetooth() throws BluetoothStateException, InterruptedException {
         final Object inquiryCompletedEvent = new Object();
         Map<String, String> devicesDiscovered = new HashMap<String, String>();
@@ -72,8 +74,6 @@ public class Bluetooth {
         }
         return null;
     }
-
-    public static final Vector<RemoteDevice> devicesDiscovered = new Vector();
 
     public static void main(String[] args) throws IOException, InterruptedException {
 

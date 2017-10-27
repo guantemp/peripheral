@@ -22,8 +22,6 @@ import org.usb4java.*;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
-import static javax.bluetooth.BluetoothConnectionException.TIMEOUT;
-
 /***
  * @author <a href=
  *         "mailto:myis1000@126.com?subject=about%20cc.foxtail.peripheral.communication.Usb.java">guan
@@ -33,6 +31,8 @@ import static javax.bluetooth.BluetoothConnectionException.TIMEOUT;
  */
 
 public class Usb {
+    private static long TIMEOUT=1000;
+
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
         // Create the libusb context

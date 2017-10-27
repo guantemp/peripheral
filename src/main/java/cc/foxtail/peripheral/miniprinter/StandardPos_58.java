@@ -35,8 +35,8 @@ public class StandardPos_58 extends MiniPrinterAdapter {
 
     private static final Pattern PATTERN = Pattern
             .compile("(GB|gb)2312|(BIG|big)5|(UTF|utf)-8|(GBK|gbk)|(UTF|utf)-16");
-    private BufferedOutputStream bos;
     private final String encoding;
+    private BufferedOutputStream bos;
     private Parallel parallel;
 
     public StandardPos_58(Parallel parallel) {

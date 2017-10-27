@@ -21,7 +21,7 @@ import cc.foxtail.peripheral.Demo;
 import cc.foxtail.peripheral.util.Align;
 
 import java.awt.*;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
 import java.util.Set;
 
 /**
@@ -30,14 +30,6 @@ import java.util.Set;
  * @since JDK7.0
  */
 public interface MiniPrinter extends Demo {
-    public enum DividingLine {
-        ASTERISK, HORIZONTAL_LINE
-    }
-
-    public enum PrintMode {
-        DOUBLE_HEIGHT, DOUBLE_WIDTH, QUADRUPLE, REVERSE, THICK_UNDERLINE, THIN_UNDERLINE, UPSIDEDOWN, WHIRL
-    }
-
     /**
      * Closes this output stream and releases any system resources associated
      * with this stream
@@ -107,5 +99,13 @@ public interface MiniPrinter extends Demo {
     void println(String s, int offset, Set<PrintMode> style);
 
     void rest();
+
+    public enum DividingLine {
+        ASTERISK, HORIZONTAL_LINE
+    }
+
+    public enum PrintMode {
+        DOUBLE_HEIGHT, DOUBLE_WIDTH, QUADRUPLE, REVERSE, THICK_UNDERLINE, THIN_UNDERLINE, UPSIDEDOWN, WHIRL
+    }
 
 }

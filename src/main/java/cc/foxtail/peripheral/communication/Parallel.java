@@ -34,32 +34,18 @@ import java.util.regex.Pattern;
  * @since JDK7.0
  */
 public class Parallel {
-    private class SerialReader implements ParallelPortEventListener {
-        private byte[] buffer = new byte[1024];
-
-        @Override
-        public void parallelEvent(ParallelPortEvent event) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            switch (event.getEventType()) {
-                case ParallelPortEvent.PAR_EV_BUFFER:// 2
-                    break;
-                case ParallelPortEvent.PAR_EV_ERROR: // 1
-                    try {
-                        int numBytes = parallelPort.getInputStream().read(buffer);
-                        System.arraycopy(buffer, 0, readBuffer, 0, numBytes);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-            }
-        }
-    }
-
     private static final Pattern pattern = Pattern.compile("LPT(\\d?\\d)");
+    private ParallelPort parallelPort;
+    private String port;
+    private byte[] readBuffer;
+    private int timeout;
+
+    public Parallel(String port, int timeout) throws NoSuchPortException,
+            PortInUseException, TooManyListenersException {
+        setPort(port);
+        setTimeout(timeout);
+        init();
+    }
 
     /**
      * @return The machine all parallel name
@@ -75,18 +61,6 @@ public class Parallel {
                 parallel.add(portIdentifier.getName());
         }
         return parallel.toArray(new String[0]);
-    }
-
-    private ParallelPort parallelPort;
-    private String port;
-    private byte[] readBuffer;
-    private int timeout;
-
-    public Parallel(String port, int timeout) throws NoSuchPortException,
-            PortInUseException, TooManyListenersException {
-        setPort(port);
-        setTimeout(timeout);
-        init();
     }
 
     public void close() {
@@ -142,5 +116,30 @@ public class Parallel {
 
     private void setTimeout(int timeout) {
         this.timeout = timeout;
+    }
+
+    private class SerialReader implements ParallelPortEventListener {
+        private byte[] buffer = new byte[1024];
+
+        @Override
+        public void parallelEvent(ParallelPortEvent event) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            switch (event.getEventType()) {
+                case ParallelPortEvent.PAR_EV_BUFFER:// 2
+                    break;
+                case ParallelPortEvent.PAR_EV_ERROR: // 1
+                    try {
+                        int numBytes = parallelPort.getInputStream().read(buffer);
+                        System.arraycopy(buffer, 0, readBuffer, 0, numBytes);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+            }
+        }
     }
 }

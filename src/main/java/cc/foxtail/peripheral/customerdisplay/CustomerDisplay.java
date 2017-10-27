@@ -34,13 +34,6 @@ import java.util.Set;
 public interface CustomerDisplay extends Demo {
 
     /**
-     * Now supports up to 4 lines
-     */
-    enum Y_axis {
-        FOUR, ONE, THREE, TWO;
-    }
-
-    /**
      * @param level 1-5
      */
     void adjustBrightness(int level);
@@ -121,4 +114,11 @@ public interface CustomerDisplay extends Demo {
      * @return
      */
     boolean isSupportShowInfo();
+
+    /**
+     * Now supports up to 4 lines
+     */
+    enum Y_axis {
+        FOUR, ONE, THREE, TWO;
+    }
 }

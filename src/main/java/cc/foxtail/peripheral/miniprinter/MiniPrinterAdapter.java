@@ -20,7 +20,7 @@ package cc.foxtail.peripheral.miniprinter;
 import cc.foxtail.peripheral.util.Align;
 
 import java.awt.*;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
 import java.util.Set;
 
 /**

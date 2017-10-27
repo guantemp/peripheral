@@ -11,6 +11,12 @@ import java.awt.*;
  * @author rtyh
  */
 public class Wer extends JDialog {
+    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
+    private JToolBar toolBar1;
+    private JButton button2;
+    private JToolBar toolBar2;
+    private JButton button1;
+
     public Wer(Frame owner) {
         super(owner);
         initComponents();
@@ -62,11 +68,5 @@ public class Wer extends JDialog {
         setLocationRelativeTo(getOwner());
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
-
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    private JToolBar toolBar1;
-    private JButton button2;
-    private JToolBar toolBar2;
-    private JButton button1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

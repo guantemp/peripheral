@@ -23,7 +23,7 @@ import gnu.io.PortInUseException;
 import org.junit.Test;
 
 import javax.imageio.ImageIO;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.TooManyListenersException;
