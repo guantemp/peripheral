@@ -107,5 +107,4 @@ public interface MiniPrinter extends Demo {
     public enum PrintMode {
         DOUBLE_HEIGHT, DOUBLE_WIDTH, QUADRUPLE, REVERSE, THICK_UNDERLINE, THIN_UNDERLINE, UPSIDEDOWN, WHIRL
     }
-
 }

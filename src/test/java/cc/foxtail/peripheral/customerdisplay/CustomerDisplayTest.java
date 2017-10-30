@@ -41,7 +41,7 @@ public class CustomerDisplayTest extends TestCase {
         System.out.println();
         for (String s : Serial.listAvailableSerialPort())
             System.out.print(s + " ");
-        Serial serial = new Serial("COM6", 2400, 8, 1, 0,50,100);
+        Serial serial = new Serial("COM6", 2400, 8, 1, 0, 50, 100);
         CustomerDisplay customerDisplay = new StandardLed(serial, "gb2312");
         customerDisplay.demo();
     }

@@ -22,6 +22,7 @@ import gnu.io.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
@@ -39,12 +40,12 @@ public class Parallel {
     private String port;
     private byte[] readBuffer;
     private int timeout;
+    private boolean open;
 
     public Parallel(String port, int timeout) throws NoSuchPortException,
             PortInUseException, TooManyListenersException {
         setPort(port);
         setTimeout(timeout);
-        init();
     }
 
     /**
@@ -54,7 +55,7 @@ public class Parallel {
         @SuppressWarnings("unchecked")
         Enumeration<CommPortIdentifier> portEnum = CommPortIdentifier
                 .getPortIdentifiers();
-        Set<String> parallel = new HashSet<String>();
+        Set<String> parallel = new HashSet<>();
         while (portEnum.hasMoreElements()) {
             CommPortIdentifier portIdentifier = portEnum.nextElement();
             if (portIdentifier.getPortType() == CommPortIdentifier.PORT_PARALLEL)
@@ -63,23 +64,47 @@ public class Parallel {
         return parallel.toArray(new String[0]);
     }
 
+    /**
+     *
+     */
     public void close() {
-        if (parallelPort != null)
+        if (open && parallelPort != null) {
+            parallelPort.removeEventListener();
             parallelPort.close();
+            open = false;
+        }
     }
 
-    private void init() throws NoSuchPortException, PortInUseException,
+    /**
+     * @throws NoSuchPortException
+     * @throws PortInUseException
+     * @throws TooManyListenersException
+     */
+    private void open() throws NoSuchPortException, PortInUseException,
             TooManyListenersException {
+        if (open)
+            return;
         CommPortIdentifier portIdentifier = CommPortIdentifier
                 .getPortIdentifier(port);
         if (portIdentifier.getPortType() == CommPortIdentifier.PORT_PARALLEL) {
             parallelPort = (ParallelPort) portIdentifier.open("parallel",
                     timeout);
-            parallelPort.addEventListener(new SerialReader());
+            parallelPort.addEventListener(new ParallelReader());
             parallelPort.notifyOnError(true);
+            open = true;
         }
     }
 
+    /**
+     * @return
+     */
+    public boolean isOpen() {
+        return open;
+    }
+
+    /**
+     * @return
+     */
     public boolean isPaperOut() {
         return parallelPort.isPaperOut();
     }
@@ -98,14 +123,50 @@ public class Parallel {
     }
 
     /**
-     * @return
-     * @throws NoSuchPortException
-     * @throws PortInUseException
+     * @param mess
+     */
+    public void write(String mess, String encoding) throws IOException {
+        write(mess.getBytes(encoding));
+    }
+
+    /**
+     * @param mess
+     */
+    public void write(String mess) throws IOException {
+        write(mess.getBytes("UTF-8"));
+    }
+
+    /**
+     * @param ch
      * @throws IOException
      */
-    public OutputStream openOutputStream() throws NoSuchPortException,
-            PortInUseException, IOException {
-        return parallelPort.getOutputStream();
+    public void write(char ch) throws IOException {
+        write(new char[]{ch});
+    }
+
+    /**
+     * @param chars
+     */
+    public void write(char[] chars) throws IOException {
+        byte[] bytes = new String(chars).getBytes(StandardCharsets.UTF_8);
+        write(bytes);
+    }
+
+    /**
+     * @param bytes
+     */
+    public void write(byte[] bytes) throws IOException {
+        if (open) {
+            OutputStream os = parallelPort.getOutputStream();
+            try {
+                os.write(bytes);
+                os.flush();
+            } finally {
+                if (os != null) {
+                    os.close();
+                }
+            }
+        }
     }
 
     private void setPort(String port) {
@@ -118,7 +179,7 @@ public class Parallel {
         this.timeout = timeout;
     }
 
-    private class SerialReader implements ParallelPortEventListener {
+    private class ParallelReader implements ParallelPortEventListener {
         private byte[] buffer = new byte[1024];
 
         @Override

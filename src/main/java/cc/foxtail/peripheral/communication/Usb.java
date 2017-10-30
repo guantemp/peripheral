@@ -31,7 +31,7 @@ import java.nio.IntBuffer;
  */
 
 public class Usb {
-    private static long TIMEOUT=1000;
+    private static long TIMEOUT = 1000;
 
     public static void main(String[] args) {
         long start = System.currentTimeMillis();

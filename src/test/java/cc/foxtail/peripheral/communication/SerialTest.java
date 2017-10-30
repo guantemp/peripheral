@@ -2,18 +2,19 @@ package cc.foxtail.peripheral.communication;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class SerialTest {
     @Test
     public void listAllSerialPort() throws Exception {
-        String[] com=Serial.listAllSerialPort();
-        for(String s:com)
+        String[] com = Serial.listAllSerialPort();
+        for (String s : com)
             System.out.println(s);
     }
 
     @Test
     public void listAvailableSerialPort() throws Exception {
+        String[] com = Serial.listAvailableSerialPort();
+        for (String s : com)
+            System.out.println(s);
     }
 
     @Test

@@ -1,7 +1,7 @@
 /*
  * @(#}Serial.java
  *
- * Copyright 2013 www.pos4j.com All rights Reserved.
+ * Copyright 2017 www.foxtail.cc All rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package cc.foxtail.peripheral.communication;
 
 
 import gnu.io.*;
-import lib.foxtail.RxtxExtracter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,11 +37,8 @@ public final class Serial extends Observable {
             .compile("300|600|1200|2400|4800|9600|19200|38400|43000|56000|57600|115200");
     // Windows:com[1-128],Linux:/dev/ttyS[0-128],MacOS:/dev/tty.*
     private static final Pattern PORT_PATTERN = Pattern
-            .compile("COM(1[0-2][0-7]|\\d|[1-9]\\d)|/dev/ttyS(1[0-2][0-7]|\\d|[1-9]\\d)|/dev/tty.");
+            .compile("COM(1[0-2][0-8]|\\d|[1-9]\\d)|/dev/ttyS(1[0-2][0-8]|\\d|[1-9]\\d)|/dev/tty.");
 
-    static {
-        RxtxExtracter.load();
-    }
 
     private int baudRate;
     private int dataBits;
@@ -53,6 +49,7 @@ public final class Serial extends Observable {
     private int timeout;
     private int delay;
     private boolean open = false;
+    private volatile boolean interrupted;
 
     /**
      * @param port
@@ -81,7 +78,7 @@ public final class Serial extends Observable {
         @SuppressWarnings("unchecked")
         Enumeration<CommPortIdentifier> portEnum = CommPortIdentifier
                 .getPortIdentifiers();
-        Set<String> serial = new HashSet<String>();
+        Set<String> serial = new HashSet<>();
         while (portEnum.hasMoreElements()) {
             CommPortIdentifier portIdentifier = portEnum.nextElement();
             if (portIdentifier.getPortType() == CommPortIdentifier.PORT_SERIAL)
@@ -102,7 +99,7 @@ public final class Serial extends Observable {
             CommPortIdentifier portIdentifier = portEnum.nextElement();
             if (portIdentifier.getPortType() == CommPortIdentifier.PORT_SERIAL) {
                 try {
-                    CommPort thePort = portIdentifier.open("CommUtil", 50);
+                    CommPort thePort = portIdentifier.open("CommUtil", 500);
                     thePort.close();
                     serial.add(portIdentifier.getName());
                 } catch (PortInUseException e) {
@@ -122,6 +119,8 @@ public final class Serial extends Observable {
 
     public void close() {
         if (open && serialPort != null) {
+            //interrupt read thread
+            interrupted = true;
             serialPort.notifyOnDataAvailable(false);
             serialPort.removeEventListener();
             serialPort.close();
@@ -139,12 +138,17 @@ public final class Serial extends Observable {
     public void open() throws NoSuchPortException, PortInUseException,
             UnsupportedCommOperationException, TooManyListenersException,
             IOException {
+        if (open)
+            return;
         CommPortIdentifier portIdentifier = CommPortIdentifier
                 .getPortIdentifier(port);
         serialPort = (SerialPort) portIdentifier.open("serial", timeout);
         serialPort.setSerialPortParams(baudRate, dataBits, stopBits, parity);
-        serialPort.addEventListener(new SerialReader());
+        SerialReader serialReader = new SerialReader();
+        serialPort.addEventListener(serialReader);
         serialPort.notifyOnDataAvailable(true);
+        Thread thread = new Thread(serialReader);
+        thread.start();
         open = true;
     }
 
@@ -236,7 +240,7 @@ public final class Serial extends Observable {
     private void setPort(String port) {
         if (!PORT_PATTERN.matcher(port).matches())
             throw new IllegalArgumentException(
-                    "Port must be COM*(1-127) with windows or /dev/ttyS*(1-127) with Linux or /dev/tty.* with MacOS");
+                    "Port must be COM*(1-128) with windows or /dev/ttyS*(1-128) with Linux or /dev/tty.* with MacOS");
         this.port = port;
     }
 
@@ -256,9 +260,7 @@ public final class Serial extends Observable {
         this.delay = delay;
     }
 
-    private class SerialReader implements SerialPortEventListener {
-        private byte[] buffer = new byte[1024];
-
+    private class SerialReader implements SerialPortEventListener, Runnable {
         @Override
         public void serialEvent(SerialPortEvent event) {
             try {
@@ -280,18 +282,40 @@ public final class Serial extends Observable {
                 case SerialPortEvent.DATA_AVAILABLE: // 1
                     try {
                         InputStream is = serialPort.getInputStream();
-                        int numBytes = 0;
+                        int numBytes = is.available();
+                        byte[] buffer = new byte[numBytes];
                         while (is.available() > 0) {
                             numBytes = is.read(buffer);
                         }
-                        byte[] tmp = new byte[numBytes];
-                        System.arraycopy(buffer, 0, tmp, 0, numBytes);
                         setChanged();
-                        notifyObservers(tmp);
+                        notifyObservers(buffer);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     break;
+            }
+        }
+
+        /**
+         * When an object implementing interface <code>Runnable</code> is used
+         * to create a thread, starting the thread causes the object's
+         * <code>run</code> method to be called in that separately executing
+         * thread.
+         * <p>
+         * The general contract of the method <code>run</code> is that it may
+         * take any action whatsoever.
+         *
+         * @see Thread#run()
+         */
+        @Override
+        public void run() {
+            try {
+                while (!interrupted) {
+                    Thread.sleep(300);
+                    //nothing
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }

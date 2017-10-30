@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: gnu.io:rxtx:2.2-20081207">
+    <CLASSES>
+      <root url="jar://D:/mvn/gnu/io/rxtx/2.2-20081207/rxtx-2.2-20081207.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://D:/mvn/gnu/io/rxtx/2.2-20081207/rxtx-2.2-20081207-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://D:/mvn/gnu/io/rxtx/2.2-20081207/rxtx-2.2-20081207-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

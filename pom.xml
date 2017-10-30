@@ -37,29 +37,19 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>cc.foxtail</groupId>
-            <artifactId>assistant</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>lib.foxtail</groupId>
-            <artifactId>rxtx</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>org.usb4java</groupId>
             <artifactId>usb4java</artifactId>
             <version>1.2.0</version>
         </dependency>
         <dependency>
-            <groupId>org.rxtx</groupId>
-            <artifactId>rxtx</artifactId>
-            <version>2.2-20081207</version>
-        </dependency>
-        <dependency>
             <groupId>net.sf.bluecove</groupId>
             <artifactId>bluecove</artifactId>
             <version>2.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>gnu.io</groupId>
+            <artifactId>rxtx</artifactId>
+            <version>2.2-20081207</version>
         </dependency>
     </dependencies>
 </project>

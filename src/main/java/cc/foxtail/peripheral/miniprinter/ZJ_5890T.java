@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
  * @version 0.0.1 2014年10月9日
  * @since JDK6.0
  */
-public class ZJ_5890T extends MiniPrinterAdapter {
+public class ZJ_5890T extends EscPos {
     private static final Pattern PATTERN = Pattern
             .compile("(GB|gb)2312|(BIG|big)5|(UTF|utf)-8|(GBK|gbk)|(UTF|utf)-16");
     private final String encoding;
@@ -48,6 +48,7 @@ public class ZJ_5890T extends MiniPrinterAdapter {
     }
 
     public ZJ_5890T(Parallel parallel, String encoding) {
+        super(parallel, encoding);
         if (parallel == null)
             throw new IllegalArgumentException("Parallel port can not be NULL");
         this.parallel = parallel;

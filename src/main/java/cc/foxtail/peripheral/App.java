@@ -6,7 +6,6 @@ import cc.foxtail.peripheral.customerdisplay.StandardLed;
 import gnu.io.*;
 
 import java.io.*;
-import java.util.TooManyListenersException;
 
 /**
  * Hello world!
@@ -18,7 +17,7 @@ public class App {
         Serial serial = null;
         try {
             serial = new Serial("COM6", 2400, SerialPort.DATABITS_8,
-                    SerialPort.STOPBITS_1, SerialPort.PARITY_NONE,50,100);
+                    SerialPort.STOPBITS_1, SerialPort.PARITY_NONE, 50, 100);
             CustomerDisplay customerDisplay = new StandardLed(serial,
                     "gb2312");
             customerDisplay.demo();
