@@ -50,6 +50,7 @@ public final class Serial extends Observable {
     private int delay;
     private boolean open = false;
     private volatile boolean interrupted;
+    private OutputStream os;
 
     /**
      * @param port
@@ -147,23 +148,29 @@ public final class Serial extends Observable {
         SerialReader serialReader = new SerialReader();
         serialPort.addEventListener(serialReader);
         serialPort.notifyOnDataAvailable(true);
+        os = serialPort.getOutputStream();
         Thread thread = new Thread(serialReader);
         thread.start();
         open = true;
     }
 
+
     /**
      * @param mess
+     * @param encoding
+     * @throws IOException
      */
     public void write(String mess, String encoding) throws IOException {
         write(mess.getBytes(encoding));
     }
 
+
     /**
      * @param mess
+     * @throws IOException
      */
     public void write(String mess) throws IOException {
-        write(mess.getBytes("UTF-8"));
+        os.write(mess.getBytes("UTF-8"));
     }
 
     /**
@@ -174,29 +181,36 @@ public final class Serial extends Observable {
         write(new char[]{ch});
     }
 
+
     /**
      * @param chars
+     * @throws IOException
      */
     public void write(char[] chars) throws IOException {
         byte[] bytes = new String(chars).getBytes(StandardCharsets.UTF_8);
-        write(bytes);
+        os.write(bytes);
     }
+
 
     /**
      * @param bytes
+     * @throws IOException
      */
     public void write(byte[] bytes) throws IOException {
-        if (open) {
-            OutputStream os = serialPort.getOutputStream();
-            try {
-                os.write(bytes);
-                os.flush();
-            } finally {
-                if (os != null) {
-                    os.close();
-                }
-            }
-        }
+        os.write(bytes);
+    }
+
+
+    /**
+     * @param aByte
+     * @throws IOException
+     */
+    public void write(byte aByte) throws IOException {
+        os.write(aByte);
+    }
+
+    public void flush() throws IOException {
+        os.flush();
     }
 
     /**
@@ -285,7 +299,7 @@ public final class Serial extends Observable {
                         int numBytes = is.available();
                         byte[] buffer = new byte[numBytes];
                         while (is.available() > 0) {
-                            numBytes = is.read(buffer);
+                            is.read(buffer);
                         }
                         setChanged();
                         notifyObservers(buffer);
@@ -311,7 +325,7 @@ public final class Serial extends Observable {
         public void run() {
             try {
                 while (!interrupted) {
-                    Thread.sleep(300);
+                    Thread.sleep(350);
                     //nothing
                 }
             } catch (InterruptedException e) {

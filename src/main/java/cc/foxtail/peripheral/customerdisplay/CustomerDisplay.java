@@ -24,7 +24,7 @@ import java.util.Set;
 
 /**
  * Connect customer display and displays status and data, for some pole display
- * will be able to display the product name and display advertising language
+ * will be able to display the product name and display advertising language(Supports two rows at most)
  * <p>
  *
  * @author <a href="mailto:myis1000@gmail.com">guan xiangHuan</a>
@@ -34,9 +34,9 @@ import java.util.Set;
 public interface CustomerDisplay extends Demo {
 
     /**
-     * @param level 1-5
+     * @param level do nothing if not support
      */
-    void adjustBrightness(int level);
+    void adjustBrightness(Bright level);
 
     /**
      * clear all show
@@ -44,17 +44,27 @@ public interface CustomerDisplay extends Demo {
     void clear();
 
     /**
-     * close port
+     * close customer display
      */
     void close();
 
     /**
-     * Initialization
+     *open customer display port
+     */
+    void open();
+
+    /**
+     * @return
+     */
+    boolean isOpen();
+
+    /**
+     * initialization
      */
     void init();
 
     /**
-     * Open the box
+     * Open the cash box
      */
     void openCashBox();
 
@@ -86,7 +96,7 @@ public interface CustomerDisplay extends Demo {
     /**
      * Actual receipts
      *
-     * @param cash
+     * @param paid
      */
     void showPaid(double paid);
 
@@ -106,7 +116,6 @@ public interface CustomerDisplay extends Demo {
      * Unit price
      *
      * @param price
-     * @param number
      */
     void showUnitPrice(double price);
 
@@ -115,10 +124,24 @@ public interface CustomerDisplay extends Demo {
      */
     boolean isSupportShowInfo();
 
+    enum Bright {
+       ONE((byte) 1), TWO((byte) 2), THRER((byte) 3), FOUR((byte) 4), FIVE((byte) 5);
+
+        private byte level;
+
+        Bright(byte level) {
+            this.level = level;
+        }
+
+        public byte level() {
+            return level;
+        }
+    }
+
     /**
      * Now supports up to 4 lines
      */
     enum Y_axis {
-        FOUR, ONE, THREE, TWO;
+        ONE, TWO;
     }
 }

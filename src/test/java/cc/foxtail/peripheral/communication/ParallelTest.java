@@ -22,7 +22,9 @@ import gnu.io.PortInUseException;
 import gnu.io.UnsupportedCommOperationException;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.TooManyListenersException;
 
 
@@ -36,7 +38,6 @@ public class ParallelTest {
     public void testClose() throws NoSuchPortException, PortInUseException,
             IOException, TooManyListenersException {
         Parallel parallel = new Parallel("LPT1", 500);
-        parallel.openOutputStream();
         parallel.close();
     }
 
@@ -45,9 +46,7 @@ public class ParallelTest {
             PortInUseException, IOException, UnsupportedCommOperationException, TooManyListenersException {
         Parallel parallel = new Parallel("LPT2", 500);
         try {
-            PrintWriter writer = new PrintWriter(new OutputStreamWriter(
-                    parallel.openOutputStream(), "gb2312"));
-            writer.write(new char[]{0x1d, 0x72, 0x01});
+            parallel.write(new char[]{0x1d, 0x72, 0x01});
             parallel.close();
             parallel = new Parallel("LPT2", 500);
             InputStream is = parallel.openInputStream();
@@ -85,11 +84,9 @@ public class ParallelTest {
             NoSuchPortException, PortInUseException, IOException, TooManyListenersException {
         Parallel parallel = new Parallel("LPT2", 500);
         try {
-            BufferedOutputStream bos = new BufferedOutputStream(
-                    parallel.openOutputStream());
-            bos.write(new byte[]{0x1d, 0x68, 0x5c, 0x1d, 0x48, 0x02, 0x1d,
+            parallel.write(new byte[]{0x1d, 0x68, 0x5c, 0x1d, 0x48, 0x02, 0x1d,
                     0x6b, 0x49, 0x0a, 0x7b, 0x42});
-            bos.write("No.123456".getBytes("gb2312"));
+            parallel.write("No.123456".getBytes("gb2312"));
             // writer.write(new char[] { 0x1b, 0x24, 0x98, 0x01 });
             // writer.write("巍峨");
             /*
@@ -106,7 +103,6 @@ public class ParallelTest {
 			 * 
 			 * writer.write(new char[] { 0x0a }); writer.close();
 			 */
-            bos.close();
         } finally {
             // assertTrue(parallel.isPaperOut());
             parallel.close();

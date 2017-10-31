@@ -20,12 +20,9 @@ package cc.foxtail.peripheral.miniprinter;
 import cc.foxtail.peripheral.communication.Parallel;
 import cc.foxtail.peripheral.util.Align;
 import cc.foxtail.peripheral.util.ImageView;
-import gnu.io.NoSuchPortException;
-import gnu.io.PortInUseException;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
@@ -40,7 +37,6 @@ public class ZJ_5890T extends EscPos {
     private static final Pattern PATTERN = Pattern
             .compile("(GB|gb)2312|(BIG|big)5|(UTF|utf)-8|(GBK|gbk)|(UTF|utf)-16");
     private final String encoding;
-    private BufferedOutputStream bos;
     private Parallel parallel;
 
     public ZJ_5890T(Parallel parallel) {
@@ -56,18 +52,12 @@ public class ZJ_5890T extends EscPos {
             throw new IllegalArgumentException(
                     "Encoding is not GB2312|BIG5|UTF-8|GBK|UTF-16");
         this.encoding = encoding;
-        try {
-            bos = new BufferedOutputStream(parallel.openOutputStream());
-        } catch (NoSuchPortException | PortInUseException | IOException e) {
-            close();
-            e.printStackTrace();
-        }
     }
 
     @Override
     public void print(String s) {
         try {
-            bos.write(s.getBytes(encoding));
+            parallel.write(s.getBytes(encoding));
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -76,7 +66,7 @@ public class ZJ_5890T extends EscPos {
 
     public void compositionLine(String s) {
         try {
-            bos.write(s.getBytes(encoding));
+            parallel.write(s.getBytes(encoding));
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -86,10 +76,10 @@ public class ZJ_5890T extends EscPos {
     public void compositionLine(String s, int offset, Set<PrintMode> style) {
         try {
             if (style.contains(PrintMode.QUADRUPLE))
-                bos.write(new byte[]{0x1b, 0x21, 0x30});
-            bos.write(new byte[]{0x1b, 0x24, (byte) (offset % 256),
+                parallel.write(new byte[]{0x1b, 0x21, 0x30});
+            parallel.write(new byte[]{0x1b, 0x24, (byte) (offset % 256),
                     (byte) (offset / 256)});
-            bos.write(s.getBytes(encoding));
+            parallel.write(s.getBytes(encoding));
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -104,10 +94,10 @@ public class ZJ_5890T extends EscPos {
     public void print(String s, int offset, Set<PrintMode> style) {
         try {
             if (style.contains(PrintMode.QUADRUPLE))
-                bos.write(new byte[]{0x1b, 0x21, 0x30});
-            bos.write(new byte[]{0x1b, 0x24, (byte) (offset % 256),
+                parallel.write(new byte[]{0x1b, 0x21, 0x30});
+            parallel.write(new byte[]{0x1b, 0x24, (byte) (offset % 256),
                     (byte) (offset / 256)});
-            bos.write(s.getBytes(encoding));
+            parallel.write(s.getBytes(encoding));
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -116,24 +106,17 @@ public class ZJ_5890T extends EscPos {
 
     @Override
     public void close() {
-        if (bos != null)
-            try {
-                bos.close();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        parallel.close();
+        if (parallel != null)
+            parallel.close();
     }
 
     @Override
     public void print(DividingLine line) {
         try {
-            bos.write(new byte[]{0x1b, 0x2a, 0x00, (byte) 0x80, 0x01});
+            parallel.write(new byte[]{0x1b, 0x2a, 0x00, (byte) 0x80, 0x01});
             byte[] ds = new byte[384];
             Arrays.fill(ds, (byte) 0x18);
-            bos.write(ds);
-            bos.flush();
+            parallel.write(ds);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -153,10 +136,9 @@ public class ZJ_5890T extends EscPos {
         int w = img.getWidth() / 8;
         int h = img.getHeight() / 8;
         try {
-            bos.write(new byte[]{0x1c, 0x71, 0x01, (byte) (w % 256),
+            parallel.write(new byte[]{0x1c, 0x71, 0x01, (byte) (w % 256),
                     (byte) (w / 256), (byte) (h % 256), (byte) (h / 256)});
-            bos.write(pixels);
-            bos.flush();
+            parallel.write(pixels);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -181,9 +163,9 @@ public class ZJ_5890T extends EscPos {
     @Override
     public void openCashBox() {
         try {
-            bos.write(new byte[]{0x1b, 0x70, 0x00, 0x05, 0x05, 0x1b, 0x70,
+            parallel.write(new byte[]{0x1b, 0x70, 0x00, 0x05, 0x05, 0x1b, 0x70,
                     0x01, 0x05, 0x05});
-            bos.flush();
+            // parallel.flush();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -193,9 +175,9 @@ public class ZJ_5890T extends EscPos {
     @Override
     public void printBitmapInFlash(int id) {
         try {
-            bos.write(new byte[]{0x1b, 0x61, 0x01, 0x1c, 0x70, 0x00, 0x00,
+            parallel.write(new byte[]{0x1b, 0x61, 0x01, 0x1c, 0x70, 0x00, 0x00,
                     0x1b, 0x61, 0x00});
-            bos.flush();
+            //parallel.flush();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -205,8 +187,8 @@ public class ZJ_5890T extends EscPos {
     @Override
     public void rest() {
         try {
-            bos.write(new byte[]{0x1b, 0x40});
-            bos.flush();
+            parallel.write(new byte[]{0x1b, 0x40});
+            // parallel.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
