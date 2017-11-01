@@ -46,7 +46,7 @@ public class StandardLed implements CustomerDisplay {
     private static final char SHOW_END = 0x0d;
     private static final char[] SHOW_START = {0x1b, 0x51, 0x41};
     private static final char[] TOTAL = {0x1b, 0x73, 0x32};
-    private static final char[] BRIGHT = {0x1F, 0x2a};
+    private static final char[] BRIGHT = {0x1F, 0x58};
     private static final char CLEAR = 0x0c;
     protected boolean open;
     private Serial serial;

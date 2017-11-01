@@ -39,7 +39,6 @@ public final class Serial extends Observable {
     private static final Pattern PORT_PATTERN = Pattern
             .compile("COM(1[0-2][0-8]|\\d|[1-9]\\d)|/dev/ttyS(1[0-2][0-8]|\\d|[1-9]\\d)|/dev/tty.");
 
-
     private int baudRate;
     private int dataBits;
     private int parity;
@@ -49,7 +48,6 @@ public final class Serial extends Observable {
     private int timeout;
     private int delay;
     private boolean open = false;
-    private volatile boolean interrupted;
     private OutputStream os;
 
     /**
@@ -100,7 +98,7 @@ public final class Serial extends Observable {
             CommPortIdentifier portIdentifier = portEnum.nextElement();
             if (portIdentifier.getPortType() == CommPortIdentifier.PORT_SERIAL) {
                 try {
-                    CommPort thePort = portIdentifier.open("CommUtil", 500);
+                    CommPort thePort = portIdentifier.open("CommUtil", 350);
                     thePort.close();
                     serial.add(portIdentifier.getName());
                 } catch (PortInUseException e) {
@@ -120,8 +118,6 @@ public final class Serial extends Observable {
 
     public void close() {
         if (open && serialPort != null) {
-            //interrupt read thread
-            interrupted = true;
             serialPort.notifyOnDataAvailable(false);
             serialPort.removeEventListener();
             serialPort.close();
@@ -145,12 +141,9 @@ public final class Serial extends Observable {
                 .getPortIdentifier(port);
         serialPort = (SerialPort) portIdentifier.open("serial", timeout);
         serialPort.setSerialPortParams(baudRate, dataBits, stopBits, parity);
-        SerialReader serialReader = new SerialReader();
-        serialPort.addEventListener(serialReader);
+        serialPort.addEventListener(new SerialReader());
         serialPort.notifyOnDataAvailable(true);
         os = serialPort.getOutputStream();
-        Thread thread = new Thread(serialReader);
-        thread.start();
         open = true;
     }
 
@@ -274,7 +267,7 @@ public final class Serial extends Observable {
         this.delay = delay;
     }
 
-    private class SerialReader implements SerialPortEventListener, Runnable {
+    private class SerialReader implements SerialPortEventListener {
         @Override
         public void serialEvent(SerialPortEvent event) {
             try {
@@ -307,29 +300,6 @@ public final class Serial extends Observable {
                         e.printStackTrace();
                     }
                     break;
-            }
-        }
-
-        /**
-         * When an object implementing interface <code>Runnable</code> is used
-         * to create a thread, starting the thread causes the object's
-         * <code>run</code> method to be called in that separately executing
-         * thread.
-         * <p>
-         * The general contract of the method <code>run</code> is that it may
-         * take any action whatsoever.
-         *
-         * @see Thread#run()
-         */
-        @Override
-        public void run() {
-            try {
-                while (!interrupted) {
-                    Thread.sleep(350);
-                    //nothing
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
     }
