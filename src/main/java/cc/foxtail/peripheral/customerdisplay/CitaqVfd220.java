@@ -1,7 +1,7 @@
 /*
- * @(#}CitaqVfd810CustomerDisplay.java
+ * @(#}CitaqVfd220.java
  *
- * Copyright 2013 www.pos4j.com All rights Reserved.
+ * Copyright 2017 www.foxtail.cc All rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,148 +31,136 @@ import java.util.regex.Pattern;
 
 /**
  * @author <a href="mailto:myis1000@gmail.com">guan xiangHuan</a>
- * @version 0.0.1 2013年11月15日
- * @since JDK6.0
+ * @version 0.0.2 20171102
+ * @since JDK8.0
  */
-public class CitaqVfd220 extends StandardLed {
-    private static final char[] CHANG = {0x1b, 0x73, 0x34};
-    private static final char[] INIT = {0x1b, 0x40};
-    private static final char[] OPEN_BOX = {0x02, 0x4d};
-    private static final char[] PAID = {0x1b, 0x73, 0x33};
+public class CitaqVfd220 implements CharCustomerDispaly {
     private static final Pattern PATTERN = Pattern
             .compile("(GB|gb)2312|(BIG|big)5|(UTF|utf)-8|(GBK|gbk)|(UTF|utf)-16");
-    private static final char[] PRICE = {0x1b, 0x73, 0x31};
-    private static final char[] SHOW_ALIGN_LEFT = {0x1b, 0x4c, 0x41};
-    private static final char[] SHOW_ALIGN_RIGHT = {0x1b, 0x52, 0x41};
-    private static final char[] SHOW_ALIGN_RIGHT_TO_LEFT = {0x1b, 0x4f, 0x41};
-    private static final char SHOW_END = 0x0d;
-    private static final char[] SHOW_START = {0x1b, 0x51, 0x41};
-    private static final char[] TOTAL = {0x1b, 0x73, 0x32};
+    private static final char[] OPEN_BOX = {0x02, 0x4d};
     private Serial serial;
+    private String encoding;
+    private boolean open;
+    private static final char[] INIT = {0x02, 0x43,0x31};
+    private static final char[] BRIGHT = {0x1b, 0x2a};
+    private static final char[] CLEAR = {0x0c};
 
-    /**
-     * @param serial
-     */
     public CitaqVfd220(Serial serial) {
-        super(serial);
+        this(serial, "UTF-8");
     }
 
-    @Override
-    public void close() {
-        serial.close();
+    public CitaqVfd220(Serial serial, String encoding) {
+        this.serial = Objects.requireNonNull(serial, "serial is required");
+        setEncoding(encoding);
     }
 
     @Override
     public void init() {
         try {
-            serial.write(INIT);
+            if (open) {
+                serial.write(INIT);
+                serial.flush();
+            }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
     }
 
+    @Override
+    public void adjustBrightness(Bright level) {
+        try {
+            if (open) {
+                serial.write(BRIGHT);
+                serial.write(level.level());
+                serial.flush();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void clear() {
+        try {
+            if (open) {
+                serial.write(CLEAR);
+                serial.flush();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void close() {
+        if (open) {
+            serial.close();
+            open = false;
+        }
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void open() {
+        if (!open) {
+            try {
+                serial.open();
+                open = true;
+            } catch (NoSuchPortException e) {
+                e.printStackTrace();
+            } catch (PortInUseException e) {
+                e.printStackTrace();
+            } catch (UnsupportedCommOperationException e) {
+                e.printStackTrace();
+            } catch (TooManyListenersException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * open
+     */
     @Override
     public void openCashBox() {
         try {
-            serial.write(OPEN_BOX);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void showChange(double chang) {
-        try {
-            serial.write(CHANG);
-            serial.write(SHOW_START);
-            serial.write(String.valueOf(chang));
-            serial.write(SHOW_END);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void showInfo(int x, Set<Y_axis> y, Align align, String info) {
-        for (Y_axis axis : y) {
-            System.out.println(axis);
-        }
-        try {
-            switch (align) {
-                case LEFT:
-                    serial.write(SHOW_ALIGN_LEFT);
-                    break;
-                case RIGHT:
-                    serial.write(SHOW_ALIGN_RIGHT);
-                    break;
-                case RIGHT_TO_LEFT:
-                    serial.write(SHOW_ALIGN_RIGHT_TO_LEFT);
-                    break;
-                case LEFT_TO_RIGHT:
-                case CENTER:
-                case NONE:
-                    break;
-                case BOTTOM:
-                    break;
-                case BOTTOM_TO_TOP:
-                    break;
-                case SCROLL:
-                    break;
-                case TOP:
-                    break;
-                case TOP_TO_BOTTOM:
-                    break;
-                default:
-                    break;
+            if (open) {
+                serial.write(OPEN_BOX);
+                serial.flush();
             }
-            serial.write(info);
-            serial.write(SHOW_END);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
     @Override
-    public void showPaid(double paid) {
-        try {
-            serial.write(PAID);
-            serial.write(SHOW_START);
-            serial.write(String.valueOf(paid));
-            serial.write(SHOW_END);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+    public void show(Set<Y_axis> y_axis, Align align, String info) {
+
     }
 
+    /**
+     * @param y_axis
+     * @param info
+     */
     @Override
-    public void showTotal(double total) {
-        try {
-            serial.write(TOTAL);
-            serial.write(SHOW_START);
-            serial.write(String.valueOf(total));
-            serial.write(SHOW_END);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+    public void show(Set<Y_axis> y_axis, String info) {
+
     }
 
-    @Override
-    public void showUnitPrice(double price) {
-        try {
-            serial.write(PRICE);
-            serial.write(SHOW_START);
-            serial.write(String.valueOf(price));
-            serial.write(SHOW_END);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+    private void setEncoding(String encoding) {
+        if (encoding == null || !PATTERN.matcher(encoding).matches())
+            throw new IllegalArgumentException(
+                    "Encoding must be (GB|gb)2312|(BIG|big)5|(UTF|utf)-8|(GBK|gbk)|(UTF|utf)-16");
+        this.encoding = encoding;
     }
 }

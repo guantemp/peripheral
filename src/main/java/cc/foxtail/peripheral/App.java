@@ -1,8 +1,7 @@
 package cc.foxtail.peripheral;
 
 import cc.foxtail.peripheral.communication.Serial;
-import cc.foxtail.peripheral.customerdisplay.CustomerDisplay;
-import cc.foxtail.peripheral.customerdisplay.StandardLed;
+import cc.foxtail.peripheral.customerdisplay.LedCustomerDisplay;
 import gnu.io.*;
 
 import java.io.*;
@@ -18,7 +17,7 @@ public class App {
         try {
             serial = new Serial("COM6", 2400, SerialPort.DATABITS_8,
                     SerialPort.STOPBITS_1, SerialPort.PARITY_NONE, 50, 100);
-            CustomerDisplay customerDisplay = new StandardLed(serial,
+            CustomerDisplay customerDisplay = new LedCustomerDisplay(serial,
                     "gb2312");
             customerDisplay.demo();
         } finally {

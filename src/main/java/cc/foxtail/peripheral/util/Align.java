@@ -1,7 +1,7 @@
 /*
  * @(#}Align.java
  *
- * Copyright 2013 www.pos4j.com All rights Reserved.
+ * Copyright 2017 www.foxtail.cc All rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,9 +21,9 @@ package cc.foxtail.peripheral.util;
  * Set string alignment
  *
  * @author <a href="mailto:myis1000@gmail.com">guan xiangHuan</a>
- * @version 0.0.1 2013年11月15日
- * @since JDK6.0
+ * @version 0.0.2 20171102
+ * @since JDK8.0
  */
 public enum Align {
-    BOTTOM, BOTTOM_TO_TOP, CENTER, LEFT, LEFT_TO_RIGHT, NONE, RIGHT, RIGHT_TO_LEFT, SCROLL, TOP, TOP_TO_BOTTOM;
+    CENTER, LEFT, RIGHT, SCROLL;
 }

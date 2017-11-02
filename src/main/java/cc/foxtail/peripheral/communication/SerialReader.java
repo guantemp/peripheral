@@ -11,6 +11,19 @@ import java.util.Observer;
 import java.util.TooManyListenersException;
 
 public class SerialReader implements Observer {
+    public static void main(String[] args) throws PortInUseException, IOException, NoSuchPortException, TooManyListenersException, UnsupportedCommOperationException, InterruptedException {
+        Serial serial = new Serial("COM1", 9600, 8, 1, 0, 500, 120);
+        SerialReader r1 = new SerialReader();
+        serial.addObserver(r1);
+        serial.open();
+        System.out.println("begin");
+        Thread.sleep(30000);
+        serial.close();
+        System.out.println("close");
+        Thread.sleep(10000);
+        System.out.println("end");
+    }
+
     /**
      * This method is called whenever the observed object is changed. An
      * application calls an <tt>Observable</tt> object's
@@ -23,22 +36,9 @@ public class SerialReader implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         try {
-            System.out.println("I get "+new String((byte[])arg,"GBK"));
+            System.out.println("I get " + new String((byte[]) arg, "GBK"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void main(String[] args) throws PortInUseException, IOException, NoSuchPortException, TooManyListenersException, UnsupportedCommOperationException, InterruptedException {
-        Serial serial = new Serial("COM1", 9600, 8, 1, 0, 500, 120);
-        SerialReader r1 = new SerialReader();
-        serial.addObserver(r1);
-        serial.open();
-        System.out.println("begin");
-        Thread.sleep(30000);
-        serial.close();
-        System.out.println("close");
-        Thread.sleep(10000);
-        System.out.println("end");
     }
 }
