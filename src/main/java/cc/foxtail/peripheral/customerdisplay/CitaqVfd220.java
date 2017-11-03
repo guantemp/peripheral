@@ -34,16 +34,16 @@ import java.util.regex.Pattern;
  * @version 0.0.2 20171102
  * @since JDK8.0
  */
-public class CitaqVfd220 implements CharCustomerDispaly {
+public class CitaqVfd220 implements CharacterCustomerDispaly {
     private static final Pattern PATTERN = Pattern
             .compile("(GB|gb)2312|(BIG|big)5|(UTF|utf)-8|(GBK|gbk)|(UTF|utf)-16");
     private static final char[] OPEN_BOX = {0x02, 0x4d};
+    private static final char[] INIT = {0x02, 0x43, 0x31};
+    private static final char[] BRIGHT = {0x1b, 0x2a};
+    private static final char[] CLEAR = {0x0c};
     private Serial serial;
     private String encoding;
     private boolean open;
-    private static final char[] INIT = {0x02, 0x43,0x31};
-    private static final char[] BRIGHT = {0x1b, 0x2a};
-    private static final char[] CLEAR = {0x0c};
 
     public CitaqVfd220(Serial serial) {
         this(serial, "UTF-8");

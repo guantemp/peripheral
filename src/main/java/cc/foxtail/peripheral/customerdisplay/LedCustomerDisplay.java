@@ -17,7 +17,6 @@
  */
 package cc.foxtail.peripheral.customerdisplay;
 
-import cc.foxtail.peripheral.Demo;
 import cc.foxtail.peripheral.communication.Serial;
 import gnu.io.NoSuchPortException;
 import gnu.io.PortInUseException;
@@ -33,7 +32,7 @@ import java.util.regex.Pattern;
  * @version 0.0.3 20171102
  * @since JDK8.0
  */
-public class LedCustomerDisplay implements Demo {
+public class LedCustomerDisplay implements CustomerDisplay {
     private static final char[] CHANG = {0x1b, 0x73, 0x34};
     private static final char[] INIT = {0x1b, 0x40};
     private static final char[] OPEN_BOX = {0x02, 0x4d};
@@ -59,18 +58,26 @@ public class LedCustomerDisplay implements Demo {
         setEncoding(encoding);
     }
 
-    private void setEncoding(String encoding) {
-        if (encoding == null || !PATTERN.matcher(encoding).matches())
-            throw new IllegalArgumentException(
-                    "Encoding must be (GB|gb)2312|(BIG|big)5|(UTF|utf)-8|(GBK|gbk)|(UTF|utf)-16");
-        this.encoding = encoding;
-    }
-
     /**
      * @param serial
      */
     public LedCustomerDisplay(Serial serial) {
         this(serial, "UTF-8");
+    }
+
+    @Override
+    public boolean isLedSupport() {
+        return true;
+    }
+
+    /**
+     * @param encoding
+     */
+    private void setEncoding(String encoding) {
+        if (encoding == null || !PATTERN.matcher(encoding).matches())
+            throw new IllegalArgumentException(
+                    "Encoding must be (GB|gb)2312|(BIG|big)5|(UTF|utf)-8|(GBK|gbk)|(UTF|utf)-16");
+        this.encoding = encoding;
     }
 
     public void open() {
@@ -212,6 +219,32 @@ public class LedCustomerDisplay implements Demo {
                 serial.write(SHOW_START);
                 serial.write(String.valueOf(price), encoding);
                 serial.write(SHOW_END);
+                serial.flush();
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void execute(byte[] instruction) {
+        try {
+            if (open) {
+                serial.write(instruction);
+                serial.flush();
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void execute(char[] instruction) {
+        try {
+            if (open) {
+                serial.write(instruction);
                 serial.flush();
             }
         } catch (IOException e) {
