@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
  * @version 0.0.2 20171102
  * @since JDK8.0
  */
-public class CitaqVfd220 implements CharacterCustomerDispaly {
+public class CitaqVfd220 implements CustomerDisplay{
     private static final Pattern PATTERN = Pattern
             .compile("(GB|gb)2312|(BIG|big)5|(UTF|utf)-8|(GBK|gbk)|(UTF|utf)-16");
     private static final char[] OPEN_BOX = {0x02, 0x4d};
@@ -79,9 +79,6 @@ public class CitaqVfd220 implements CharacterCustomerDispaly {
         }
     }
 
-    /**
-     *
-     */
     @Override
     public void clear() {
         try {
@@ -94,9 +91,6 @@ public class CitaqVfd220 implements CharacterCustomerDispaly {
         }
     }
 
-    /**
-     *
-     */
     @Override
     public void close() {
         if (open) {
@@ -144,17 +138,16 @@ public class CitaqVfd220 implements CharacterCustomerDispaly {
     }
 
     @Override
-    public void show(Set<Y_axis> y_axis, Align align, String info) {
-
+    public boolean isTwoLineCharacterSupport() {
+        return true;
     }
 
     /**
-     * @param y_axis
-     * @param info
+     * @return true if port is open
      */
     @Override
-    public void show(Set<Y_axis> y_axis, String info) {
-
+    public boolean isOpen() {
+        return open;
     }
 
     private void setEncoding(String encoding) {

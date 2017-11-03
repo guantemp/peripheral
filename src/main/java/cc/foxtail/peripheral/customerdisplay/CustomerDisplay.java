@@ -46,20 +46,7 @@ public interface CustomerDisplay extends Demo {
     }
 
     default void demo() {
-        try {
-            if (isFourLineCharacterSupport()) {
-                show(EnumSet.of(Y_axis.ONE), Align.LEFT,
-                        "德芙黑浓巧克力");
-                show(EnumSet.of(Y_axis.TWO), Align.CENTER, "单价：115.73");
-                show(EnumSet.of(Y_axis.THRER), Align.CENTER, "数量：1.52");
-                show(EnumSet.of(Y_axis.FOUR), Align.CENTER, "小计：175.9096");
-                Thread.sleep(1500);
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            close();
-        }
+        //do nothing
     }
 
     /**
@@ -104,22 +91,29 @@ public interface CustomerDisplay extends Demo {
     /**
      * @param chang
      */
-    void showChange(double chang);
+   default void showChange(double chang){//do nothing
+         }
 
     /**
      * @param charge
      */
-    void showCharge(double charge);
+    default void showCharge(double charge){
+        //do nothing
+    }
 
     /**
      * @param total
      */
-    void showTotal(double total);
+    default void showTotal(double total){
+        //do nothing
+    }
 
     /**
      * @param price
      */
-    void showUnitPrice(double price);
+    default void showUnitPrice(double price){
+        //do nothing
+    }
 
     /**
      * Upper left corner of (0.0), the y-axis position display

@@ -23,10 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TooManyListenersException;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -34,18 +31,20 @@ import java.util.regex.Pattern;
  * @version 0.0.1 20141006
  * @since JDK7.0
  */
-public class Parallel {
+public class Parallel extends Observable {
     private static final Pattern pattern = Pattern.compile("LPT(\\d?\\d)");
     private ParallelPort parallelPort;
     private String port;
     private byte[] readBuffer;
     private int timeout;
     private boolean open;
+    private int delay;
 
-    public Parallel(String port, int timeout) throws NoSuchPortException,
+    public Parallel(String port, int timeout, int delay) throws NoSuchPortException,
             PortInUseException, TooManyListenersException {
         setPort(port);
-        setTimeout(timeout);
+        this.timeout = timeout;
+        this.delay = delay;
     }
 
     /**
@@ -65,11 +64,41 @@ public class Parallel {
     }
 
     /**
+     * @return
+     */
+    public static String[] listAvailableParallel() {
+        @SuppressWarnings("unchecked")
+        Enumeration<CommPortIdentifier> portEnum = CommPortIdentifier
+                .getPortIdentifiers();
+        Set<String> parallel = new HashSet<>();
+        while (portEnum.hasMoreElements()) {
+            CommPortIdentifier portIdentifier = portEnum.nextElement();
+            if (portIdentifier.getPortType() == CommPortIdentifier.PORT_PARALLEL) {
+                try {
+                    ParallelPort parallelPort = (ParallelPort) portIdentifier.open("parallel",
+                            350);
+                    parallelPort.close();
+                    parallel.add(portIdentifier.getName());
+                } catch (PortInUseException e) {
+                    parallel.add(portIdentifier.getName() + ", is in use.");
+                } catch (Exception e) {
+                    parallel.add("Failed to open port "
+                            + portIdentifier.getName());
+                }
+                parallel.add(portIdentifier.getName());
+            }
+        }
+        return parallel.toArray(new String[0]);
+    }
+
+    /**
      *
      */
     public void close() {
         if (open && parallelPort != null) {
             parallelPort.removeEventListener();
+            parallelPort.notifyOnBuffer(false);
+            parallelPort.notifyOnError(false);
             parallelPort.close();
             open = false;
         }
@@ -90,6 +119,7 @@ public class Parallel {
             parallelPort = (ParallelPort) portIdentifier.open("parallel",
                     timeout);
             parallelPort.addEventListener(new ParallelReader());
+            parallelPort.notifyOnBuffer(true);
             parallelPort.notifyOnError(true);
             open = true;
         }
@@ -109,18 +139,6 @@ public class Parallel {
         return parallelPort.isPaperOut();
     }
 
-    /**
-     * @return
-     * @throws IOException
-     * @throws NoSuchPortException
-     * @throws UnsupportedCommOperationException
-     * @throws PortInUseException
-     */
-    public InputStream openInputStream() throws IOException,
-            NoSuchPortException, UnsupportedCommOperationException,
-            PortInUseException {
-        return parallelPort.getInputStream();
-    }
 
     /**
      * @param mess
@@ -169,23 +187,24 @@ public class Parallel {
         }
     }
 
+    /**
+     * @param port
+     */
     private void setPort(String port) {
         if (port == null || !pattern.matcher(port).matches())
             throw new IllegalArgumentException("Port is LPT1-99");
         this.port = port;
     }
 
-    private void setTimeout(int timeout) {
-        this.timeout = timeout;
-    }
 
+    /**
+     * moniter thread
+     */
     private class ParallelReader implements ParallelPortEventListener {
-        private byte[] buffer = new byte[1024];
-
         @Override
         public void parallelEvent(ParallelPortEvent event) {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(delay);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -194,8 +213,14 @@ public class Parallel {
                     break;
                 case ParallelPortEvent.PAR_EV_ERROR: // 1
                     try {
-                        int numBytes = parallelPort.getInputStream().read(buffer);
-                        System.arraycopy(buffer, 0, readBuffer, 0, numBytes);
+                        InputStream is = parallelPort.getInputStream();
+                        int numBytes = is.available();
+                        byte[] buffer = new byte[numBytes];
+                        while (is.available() > 0) {
+                            is.read(buffer);
+                        }
+                        setChanged();
+                        notifyObservers(buffer);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

@@ -259,6 +259,24 @@ public final class Serial extends Observable {
         this.stopBits = stopBits;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Serial serial = (Serial) o;
+        return baudRate == serial.baudRate &&
+                dataBits == serial.dataBits &&
+                parity == serial.parity &&
+                stopBits == serial.stopBits &&
+                Objects.equals(port, serial.port) &&
+                Objects.equals(serialPort, serial.serialPort);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(baudRate, dataBits, parity, port, serialPort, stopBits);
+    }
+
     private void setTimeout(int timeout) {
         this.timeout = timeout;
     }
