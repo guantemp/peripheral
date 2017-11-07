@@ -59,7 +59,7 @@ public class EscPos implements MiniPrinter,Observer {
     public void print(int barcodeTypes, int height, int nHriFontPosition,
                       String value) {
         try {
-            printWriter.write(new byte[]{0x1d, 0x68, 0x5c, 0x1d, 0x48, 0x02, 0x1d,
+            os.write(new byte[]{0x1d, 0x68, 0x5c, 0x1d, 0x48, 0x02, 0x1d,
                     0x6b, 0x49, 0x0a, 0x7b, 0x42});
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -155,33 +155,9 @@ public class EscPos implements MiniPrinter,Observer {
         return false;
     }
 
-    @Override
-    public boolean isPrinterBusy() {
-        return false;
-    }
-
-    @Override
-    public boolean isPrinterError() {
-        return false;
-    }
-
-    @Override
-    public boolean isPrinterTimedOut() {
-        return false;
-    }
-
-    @Override
-    public boolean isSupportBarcode() {
-        return false;
-    }
 
     @Override
     public boolean isSupportCutPaper() {
-        return false;
-    }
-
-    @Override
-    public boolean isSupportFlashBitmap() {
         return false;
     }
 
@@ -193,6 +169,11 @@ public class EscPos implements MiniPrinter,Observer {
     @Override
     public String name() {
         return null;
+    }
+
+    @Override
+    public void open() {
+
     }
 
     @Override

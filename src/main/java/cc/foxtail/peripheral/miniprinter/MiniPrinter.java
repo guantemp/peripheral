@@ -1,7 +1,7 @@
 /*
  * @(#}MiniPrinter.java
  *
- * Copyright 2013 www.pos4j.com All rights Reserved.
+ * Copyright 2013 www.foxtail.cc All rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import java.util.Set;
 
 /**
  * @author <a href="mailto:myis1000@gmail.com">guan xiangHuan</a>
- * @version 0.0.1 2013年11月28日
+ * @version 0.0.1 20171107
  * @since JDK7.0
  */
 public interface MiniPrinter extends Demo {
@@ -39,23 +39,13 @@ public interface MiniPrinter extends Demo {
     /**
      * @return
      */
-    void cutPaper();
+    void cutPaper(boolean halfCut);
 
     void downloadBitmapToFlash(BufferedImage img);
 
     boolean isPaperOut();
 
-    boolean isPrinterBusy();
-
-    boolean isPrinterError();
-
-    boolean isPrinterTimedOut();
-
-    boolean isSupportBarcode();
-
     boolean isSupportCutPaper();
-
-    boolean isSupportFlashBitmap();
 
     Dimension maxFlashBitmapSize();
 
