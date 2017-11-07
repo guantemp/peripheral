@@ -1,7 +1,7 @@
 /*
  * @(#}Parallel.java
  *
- * Copyright 2013 www.pos4j.com All rights Reserved.
+ * Copyright 2013 www.foxtail.cc All rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,10 @@ public class Parallel extends Observable {
         setPort(port);
         this.timeout = timeout;
         this.delay = delay;
+    }
+    public Parallel(String port, int timeout) throws NoSuchPortException,
+            PortInUseException, TooManyListenersException {
+       this(port,timeout,150);
     }
 
     /**

@@ -49,10 +49,11 @@ public class ParallelTest {
             parallel.write(new char[]{0x1d, 0x72, 0x01});
             parallel.close();
             parallel = new Parallel("LPT2", 500);
-            InputStream is = parallel.openInputStream();
+            // InputStream is = parallel.openInputStream();
+            InputStream is =null;
             // int temp = 0;
             // while ((temp = is.read()) != -1)
-            System.out.println(is.read(new byte[1]));
+           // System.out.println(is.read(new byte[1]));
         } finally {
             parallel.close();
         }

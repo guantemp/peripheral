@@ -60,6 +60,7 @@ public interface MiniPrinter extends Demo {
     Dimension maxFlashBitmapSize();
 
     String name();
+    void open();
 
     void openCashBox();
 
@@ -100,11 +101,11 @@ public interface MiniPrinter extends Demo {
 
     void rest();
 
-    public enum DividingLine {
+   enum DividingLine {
         ASTERISK, HORIZONTAL_LINE
     }
 
-    public enum PrintMode {
+    enum PrintMode {
         DOUBLE_HEIGHT, DOUBLE_WIDTH, QUADRUPLE, REVERSE, THICK_UNDERLINE, THIN_UNDERLINE, UPSIDEDOWN, WHIRL
     }
 }

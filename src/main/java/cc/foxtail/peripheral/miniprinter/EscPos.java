@@ -23,6 +23,10 @@ import cc.foxtail.peripheral.util.Align;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -32,20 +36,13 @@ import java.util.regex.Pattern;
  * @version 0.0.1 2015年6月11日
  * @since JDK6.0
  */
-public class EscPos implements MiniPrinter {
+public class EscPos implements MiniPrinter,Observer {
     private static final Pattern PATTERN = Pattern
             .compile("(GB|gb)2312|(BIG|big)5|(UTF|utf)-8|(GBK|gbk)|(UTF|utf)-16");
     private final String encoding;
-    private Parallel parallel;
+    private OutputStream os;
 
-    public EscPos(Parallel parallel) {
-        this(parallel, "GB2312");
-    }
-
-    public EscPos(Parallel parallel, String encoding) {
-        if (parallel == null)
-            throw new IllegalArgumentException("Parallel port can not be NULL");
-        this.parallel = parallel;
+    public EscPos(String encoding) {
         if (encoding == null || !PATTERN.matcher(encoding).matches())
             throw new IllegalArgumentException(
                     "Encoding is not GB2312|BIG5|UTF-8|GBK|UTF-16");
@@ -62,7 +59,7 @@ public class EscPos implements MiniPrinter {
     public void print(int barcodeTypes, int height, int nHriFontPosition,
                       String value) {
         try {
-            parallel.write(new byte[]{0x1d, 0x68, 0x5c, 0x1d, 0x48, 0x02, 0x1d,
+            printWriter.write(new byte[]{0x1d, 0x68, 0x5c, 0x1d, 0x48, 0x02, 0x1d,
                     0x6b, 0x49, 0x0a, 0x7b, 0x42});
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -137,8 +134,7 @@ public class EscPos implements MiniPrinter {
      */
     @Override
     public void close() {
-        if (parallel != null)
-            parallel.close();
+
     }
 
     /**
@@ -211,6 +207,20 @@ public class EscPos implements MiniPrinter {
 
     @Override
     public void demo() {
+
+    }
+
+    /**
+     * This method is called whenever the observed object is changed. An
+     * application calls an <tt>Observable</tt> object's
+     * <code>notifyObservers</code> method to have all the object's
+     * observers notified of the change.
+     *
+     * @param o   the observable object.
+     * @param arg an argument passed to the <code>notifyObservers</code>
+     */
+    @Override
+    public void update(Observable o, Object arg) {
 
     }
 }

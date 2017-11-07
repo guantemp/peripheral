@@ -126,6 +126,16 @@ public final class Serial extends Observable {
     }
 
     /**
+     * @return
+     * @throws IOException
+     */
+    public OutputStream getOutputStream() throws IOException {
+        if (open)
+            return os;
+        return null;
+    }
+
+    /**
      * @throws NoSuchPortException
      * @throws PortInUseException
      * @throws UnsupportedCommOperationException

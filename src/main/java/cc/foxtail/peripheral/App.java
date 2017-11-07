@@ -1,6 +1,7 @@
 package cc.foxtail.peripheral;
 
 import cc.foxtail.peripheral.communication.Serial;
+import cc.foxtail.peripheral.customerdisplay.CustomerDisplay;
 import cc.foxtail.peripheral.customerdisplay.LedCustomerDisplay;
 import gnu.io.*;
 
