@@ -1,7 +1,7 @@
 /*
- * @(#}StandardPrinter_58.java
+ * @(#}ThermalPrinter.java
  *
- * Copyright 2013 www.pos4j.com All rights Reserved.
+ * Copyright 2017 www.foxtail.cc All rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,37 +17,26 @@
  */
 package cc.foxtail.peripheral.miniprinter;
 
-import cc.foxtail.peripheral.communication.Parallel;
+import cc.foxtail.peripheral.annotations.Source;
 import cc.foxtail.peripheral.util.Align;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 
 /**
  * @author <a href="mailto:myis1000@gmail.com">guan xiangHuan</a>
- * @version 0.0.1 2015年6月11日
- * @since JDK6.0
+ * @version 0.0.1 20171109
+ * @since JDK8.0
  */
-public class EscPos implements MiniPrinter,Observer {
-    private static final Pattern PATTERN = Pattern
-            .compile("(GB|gb)2312|(BIG|big)5|(UTF|utf)-8|(GBK|gbk)|(UTF|utf)-16");
-    private final String encoding;
-    private OutputStream os;
+public class ThermalPrinter implements MiniPrinter, Observer {
 
-    public EscPos(String encoding) {
-        if (encoding == null || !PATTERN.matcher(encoding).matches())
-            throw new IllegalArgumentException(
-                    "Encoding is not GB2312|BIG5|UTF-8|GBK|UTF-16");
-        this.encoding = encoding;
-    }
+    private OutputStream os;
 
     /*
      * (non-Javadoc)
@@ -134,15 +123,25 @@ public class EscPos implements MiniPrinter,Observer {
      */
     @Override
     public void close() {
-
+        try {
+            os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
-     * @return
+     * @param halfCut
      */
     @Override
-    public void cutPaper() {
+    public void cutPaper(boolean halfCut) {
 
+    }
+
+
+    @Override
+    public void cutPaper() {
+        cutPaper(true);
     }
 
     @Override
@@ -167,11 +166,12 @@ public class EscPos implements MiniPrinter,Observer {
     }
 
     @Override
-    public String name() {
-        return null;
+    public String toString() {
+        return "通用热敏打印机";
     }
 
     @Override
+    @Source
     public void open() {
 
     }

@@ -27,22 +27,46 @@
                 </configuration>
             </plugin>
             <!--打包依靠jar到lib目录下-->
-             <plugin>
-                   <groupId>org.apache.maven.plugins</groupId>
-                   <artifactId>maven-dependency-plugin</artifactId>
-                   <executions>
-                       <execution>
-                           <id>copy</id>
-                           <phase>package</phase>
-                           <goals>
-                               <goal>copy-dependencies</goal>
-                           </goals>
-                           <configuration>
-                               <outputDirectory>${project.build.directory}/lib</outputDirectory>
-                           </configuration>
-                       </execution>
-                   </executions>
-               </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}/conf</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/java</directory>
+                                    <includes>
+                                        <include>**/*.json</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 

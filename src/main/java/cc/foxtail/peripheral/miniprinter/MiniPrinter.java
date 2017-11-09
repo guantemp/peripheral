@@ -36,10 +36,16 @@ public interface MiniPrinter extends Demo {
      */
     void close();
 
+
     /**
-     * @return
+     * @param halfCut
      */
     void cutPaper(boolean halfCut);
+
+    /**
+     * half cut
+     */
+    void cutPaper();
 
     void downloadBitmapToFlash(BufferedImage img);
 
@@ -49,7 +55,6 @@ public interface MiniPrinter extends Demo {
 
     Dimension maxFlashBitmapSize();
 
-    String name();
     void open();
 
     void openCashBox();
@@ -91,7 +96,7 @@ public interface MiniPrinter extends Demo {
 
     void rest();
 
-   enum DividingLine {
+    enum DividingLine {
         ASTERISK, HORIZONTAL_LINE
     }
 
