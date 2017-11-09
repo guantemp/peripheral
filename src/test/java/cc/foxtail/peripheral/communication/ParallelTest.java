@@ -50,10 +50,10 @@ public class ParallelTest {
             parallel.close();
             parallel = new Parallel("LPT2", 500);
             // InputStream is = parallel.openInputStream();
-            InputStream is =null;
+            InputStream is = null;
             // int temp = 0;
             // while ((temp = is.read()) != -1)
-           // System.out.println(is.read(new byte[1]));
+            // System.out.println(is.read(new byte[1]));
         } finally {
             parallel.close();
         }

@@ -20,7 +20,6 @@ package cc.foxtail.peripheral.customerdisplay;
 import cc.foxtail.peripheral.Demo;
 import cc.foxtail.peripheral.util.Align;
 
-import java.util.EnumSet;
 import java.util.Set;
 
 /**
@@ -91,27 +90,27 @@ public interface CustomerDisplay extends Demo {
     /**
      * @param chang
      */
-   default void showChange(double chang){//do nothing
-         }
+    default void showChange(double chang) {//do nothing
+    }
 
     /**
      * @param charge
      */
-    default void showCharge(double charge){
+    default void showCharge(double charge) {
         //do nothing
     }
 
     /**
      * @param total
      */
-    default void showTotal(double total){
+    default void showTotal(double total) {
         //do nothing
     }
 
     /**
      * @param price
      */
-    default void showUnitPrice(double price){
+    default void showUnitPrice(double price) {
         //do nothing
     }
 

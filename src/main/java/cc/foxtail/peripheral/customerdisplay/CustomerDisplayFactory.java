@@ -18,16 +18,13 @@
 package cc.foxtail.peripheral.customerdisplay;
 
 import cc.foxtail.peripheral.communication.Serial;
+
 /**
  * @author <a href="mailto:myis1000@gmail.com">guan xiangHuan</a>
  * @version 0.0.1 20171102
  * @since JDK8.0
  */
 public class CustomerDisplayFactory {
-    public enum Model {
-        LED8, VTOP_VFD8C, CITAQ_VFD220
-    }
-
     private static CustomerDisplay customerDisplay;
     private static Serial serial;
 
@@ -38,5 +35,9 @@ public class CustomerDisplayFactory {
             default:
                 return new LedCustomerDisplay(serial, encoding);
         }
+    }
+
+    public enum Model {
+        LED8, VTOP_VFD8C, CITAQ_VFD220
     }
 }

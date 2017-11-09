@@ -46,9 +46,10 @@ public class Parallel extends Observable {
         this.timeout = timeout;
         this.delay = delay;
     }
+
     public Parallel(String port, int timeout) throws NoSuchPortException,
             PortInUseException, TooManyListenersException {
-       this(port,timeout,150);
+        this(port, timeout, 150);
     }
 
     /**

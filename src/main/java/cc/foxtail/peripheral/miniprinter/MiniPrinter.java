@@ -47,6 +47,9 @@ public interface MiniPrinter extends Demo {
      */
     void cutPaper();
 
+    /**
+     * @param img
+     */
     void downloadBitmapToFlash(BufferedImage img);
 
     boolean isPaperOut();
@@ -55,48 +58,55 @@ public interface MiniPrinter extends Demo {
 
     Dimension maxFlashBitmapSize();
 
+    /**
+     * open output stream and add listeren for input
+     */
     void open();
 
+    /**
+     * open cash box
+     */
     void openCashBox();
 
-    void print(DividingLine line);
+    /**
+     * @param line parting line
+     */
+    void printPartingLine(PartingLine line);
 
     /**
-     * @param barcodeTypes     supports UPC-A, UPC-E, EAN13, EAN8, CODE39, CODE93, CODE128,
-     *                         ITF
-     * @param height           barcode height default is 162, range is 1-255
-     * @param nHriFontPosition HRI character position ,0 does not print, a printed above the
-     *                         bar code, the bar code printed below 2, 3 are printed on the
-     *                         bottom, the default does not print
-     * @param value
+     * @param num
      */
-    void print(int barcodeTypes, int height, int nHriFontPosition, String value);
+    void printBlankLine(int num);
 
-    void print(String s);
+    /**
+     *  Center print  UPC-A, UPC-E, EAN13, EAN8, CODE39, CODE93, CODE128, ITF
+     *                 QR
+     * @param height           barcode height default is 162, range is 1-255
+     * @param nHriFontPosition HRI character position ,0 does not print, 1 printed above the
+     *                          bar code, the bar code printed below 2, 3 are printed on the
+     *                          bottom, the default is 3
+     * @param value            print barcode value
+     */
+    void printBarcode(int height, int nHriFontPosition, Barcode value);
 
-    void print(String s, Align align);
-
-    void print(String s, Align align, Set<PrintMode> style);
-
-    void print(String s, int offset);
-
-    void print(String s, int offset, Set<PrintMode> style);
-
+    /**
+     * @param id
+     */
     void printBitmapInFlash(int id);
 
-    void println();
+    /**
+     * @param mode
+     * @param offset  percentage of line
+     * @param value
+     */
+    void print(Set<PrintMode> mode,int offset,String value);
 
-    void println(BufferedImage img);
+    void print(Set<PrintMode> mode,Align align,String value);
+    void print(String value);
 
-    void println(String s);
 
-    void println(String s, Align align, Set<PrintMode> style);
 
-    void println(String s, int offset, Set<PrintMode> style);
-
-    void rest();
-
-    enum DividingLine {
+    enum PartingLine {
         ASTERISK, HORIZONTAL_LINE
     }
 

@@ -18,14 +18,12 @@
 package cc.foxtail.peripheral.customerdisplay;
 
 import cc.foxtail.peripheral.communication.Serial;
-import cc.foxtail.peripheral.util.Align;
 import gnu.io.NoSuchPortException;
 import gnu.io.PortInUseException;
 import gnu.io.UnsupportedCommOperationException;
 
 import java.io.IOException;
 import java.util.Objects;
-import java.util.Set;
 import java.util.TooManyListenersException;
 import java.util.regex.Pattern;
 
@@ -34,7 +32,7 @@ import java.util.regex.Pattern;
  * @version 0.0.2 20171102
  * @since JDK8.0
  */
-public class CitaqVfd220 implements CustomerDisplay{
+public class CitaqVfd220 implements CustomerDisplay {
     private static final Pattern PATTERN = Pattern
             .compile("(GB|gb)2312|(BIG|big)5|(UTF|utf)-8|(GBK|gbk)|(UTF|utf)-16");
     private static final char[] OPEN_BOX = {0x02, 0x4d};
