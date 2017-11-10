@@ -228,7 +228,7 @@ public class ImageView {
         return result;
     }
 
-    /**
+    /**Convert pictures to grayscale
      * @param img
      * @return
      */

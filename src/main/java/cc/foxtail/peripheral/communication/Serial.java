@@ -23,6 +23,7 @@ import gnu.io.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -46,7 +47,7 @@ public final class Serial extends Observable {
     private SerialPort serialPort;
     private int stopBits;
     private int timeout;
-    private int delay;
+    private int readDelay;
     private boolean open = false;
     private OutputStream os;
 
@@ -55,19 +56,19 @@ public final class Serial extends Observable {
      * @param baudRate
      * @param dataBits
      * @param stopBits
-     * @param parity   rang is 0-4
-     * @param timeout  is Millisecond
-     * @param delay    is Millisecond
+     * @param parity    rang is 0-4
+     * @param timeout   is Millisecond
+     * @param readDelay rang 100-500 milliseconds
      */
     public Serial(String port, int baudRate, int dataBits, int stopBits,
-                  int parity, int timeout, int delay) {
+                  int parity, int timeout, int readDelay) {
         setPort(port);
         setBaudRate(baudRate);
         setDataBits(dataBits);
         setStopBits(stopBits);
         setParity(parity);
         setTimeout(timeout);
-        setDelay(delay);
+        setReadDelay(readDelay);
     }
 
     /**
@@ -112,10 +113,16 @@ public final class Serial extends Observable {
         return serial.toArray(new String[0]);
     }
 
+    /**
+     * @return
+     */
     public boolean isOpen() {
         return open;
     }
 
+    /**
+     * close serial port
+     */
     public void close() {
         if (open && serialPort != null) {
             serialPort.notifyOnDataAvailable(false);
@@ -184,13 +191,12 @@ public final class Serial extends Observable {
         write(new char[]{ch});
     }
 
-
     /**
      * @param chars
      * @throws IOException
      */
     public void write(char[] chars) throws IOException {
-        byte[] bytes = new String(chars).getBytes(StandardCharsets.UTF_8);
+        byte[] bytes = String.valueOf(chars).getBytes(StandardCharsets.UTF_8);
         os.write(bytes);
     }
 
@@ -287,19 +293,27 @@ public final class Serial extends Observable {
         return Objects.hash(baudRate, dataBits, parity, port, serialPort, stopBits);
     }
 
+    /**
+     * @param timeout
+     */
     private void setTimeout(int timeout) {
         this.timeout = timeout;
     }
 
-    private void setDelay(int delay) {
-        this.delay = delay;
+    /**
+     * @param readDelay
+     */
+    private void setReadDelay(int readDelay) {
+        if (readDelay < 100 || readDelay > 500)
+            throw new IllegalArgumentException("The ready time to read data from the serial port is 100-500 milliseconds");
+        this.readDelay = readDelay;
     }
 
     private class SerialReader implements SerialPortEventListener {
         @Override
         public void serialEvent(SerialPortEvent event) {
             try {
-                Thread.sleep(delay);
+                Thread.sleep(readDelay);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

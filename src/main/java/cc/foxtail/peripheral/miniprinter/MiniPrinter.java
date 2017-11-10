@@ -36,12 +36,6 @@ public interface MiniPrinter extends Demo {
      */
     void close();
 
-
-    /**
-     * @param halfCut
-     */
-    void cutPaper(boolean halfCut);
-
     /**
      * half cut
      */
@@ -52,16 +46,20 @@ public interface MiniPrinter extends Demo {
      */
     void downloadBitmapToFlash(BufferedImage img);
 
+    /**
+     * @return
+     */
     boolean isPaperOut();
-
-    boolean isSupportCutPaper();
-
-    Dimension maxFlashBitmapSize();
 
     /**
      * open output stream and add listeren for input
      */
     void open();
+
+    /**
+     * clear buffer data and set default when the power is on
+     */
+    void init();
 
     /**
      * open cash box
@@ -79,12 +77,13 @@ public interface MiniPrinter extends Demo {
     void printBlankLine(int num);
 
     /**
-     *  Center print  UPC-A, UPC-E, EAN13, EAN8, CODE39, CODE93, CODE128, ITF
-     *                 QR
+     * Center print  UPC-A, UPC-E, EAN13, EAN8, CODE39, CODE93, CODE128, ITF
+     * QR
+     *
      * @param height           barcode height default is 162, range is 1-255
      * @param nHriFontPosition HRI character position ,0 does not print, 1 printed above the
-     *                          bar code, the bar code printed below 2, 3 are printed on the
-     *                          bottom, the default is 3
+     *                         bar code, the bar code printed below 2, 3 are printed on the
+     *                         bottom, the default is 3
      * @param value            print barcode value
      */
     void printBarcode(int height, int nHriFontPosition, Barcode value);
@@ -96,20 +95,51 @@ public interface MiniPrinter extends Demo {
 
     /**
      * @param mode
-     * @param offset  percentage of line
+     * @param offset percentage of line
      * @param value
      */
-    void print(Set<PrintMode> mode,int offset,String value);
+    void print(Set<PrintMode> mode, int offset, String value);
 
-    void print(Set<PrintMode> mode,Align align,String value);
+    /**
+     * @param mode
+     * @param align
+     * @param value
+     */
+    void print(Set<PrintMode> mode, Align align, String value);
+
+    /**
+     * @param value
+     */
     void print(String value);
 
+    /**
+     * @param instruction
+     */
+    void execute(byte[] instruction);
 
+    /**
+     * @param instruction
+     */
+    void execute(char[] instruction);
 
+    /**
+     *
+     */
     enum PartingLine {
-        ASTERISK, HORIZONTAL_LINE
-    }
+        ASTERISK('*'), HORIZONTAL_LINE('-');
+        private char delimiter;
 
+        PartingLine(char delimiter) {
+            this.delimiter = delimiter;
+        }
+
+        public char delimiter() {
+            return delimiter;
+        }
+    }
+    /**
+     *
+     */
     enum PrintMode {
         DOUBLE_HEIGHT, DOUBLE_WIDTH, QUADRUPLE, REVERSE, THICK_UNDERLINE, THIN_UNDERLINE, UPSIDEDOWN, WHIRL
     }
