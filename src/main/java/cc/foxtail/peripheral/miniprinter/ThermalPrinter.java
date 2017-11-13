@@ -194,6 +194,14 @@ public class ThermalPrinter implements MiniPrinter, Observer {
     }
 
     /**
+     * @param img
+     */
+    @Override
+    public void printBitmap(BufferedImage img) {
+
+    }
+
+    /**
      * @param mode
      * @param offset percentage of line
      * @param value

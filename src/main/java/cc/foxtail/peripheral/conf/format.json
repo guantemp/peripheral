@@ -1,0 +1,11 @@
+{
+  "format":{
+  "name":"58MM",
+    "title":{
+      "type":"text",
+      "source":"御园黑猪红新村店",
+      "align":"center",
+      "style":"bold"
+    }
+}
+}

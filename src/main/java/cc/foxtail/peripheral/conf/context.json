@@ -1,0 +1,49 @@
+{
+  "name": "西嘉嘉POS配置",
+  "customer display": {
+    "name":"cc.foxtail.customerdisplay.LedCustomerDisplay.class",
+    "alias":"标准LED8故乡",
+    "port": "COM2",
+    "baud rate": "2400",
+    "data bits": "8",
+    "stop bits": 1,
+    "parity": 0,
+    "timeout": 350,
+    "read delay": 100
+  },
+  "mini printer": {
+    "serial": {
+      "name":"cc.foxtail.miniprinter.ThermalPrinter.class",
+      "alias":"标准58MM热敏打印机",
+      "port": "COM1",
+      "baud rate": "9600",
+      "data bits": "8",
+      "stop bits": 1,
+      "parity": 0,
+      "timeout": 350,
+      "read delay": 100
+    },
+    "network": {
+      "name":"cc.foxtail.miniprinter.XprinterXp-h160n.class",
+      "alias":"芯烨xp-h160n热敏打印机",
+      "ip": "192.168.1.80",
+      "port": 9100,
+      "format":"42字符打印格式带切纸"
+    },
+    "parallel": {
+      "name":"cc.foxtail.miniprinter..class",
+      "alias":"海信76MM正式打印机",
+      "port": "LPT1",
+      "format":"40黑标发票打印"
+    },
+    "usb": {
+      "name": "usb打印",
+      "port":"USB001",
+      "vid":45,
+      "pid": 35
+    }
+  }
+}
+
+
+

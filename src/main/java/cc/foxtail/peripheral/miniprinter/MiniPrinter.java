@@ -94,6 +94,11 @@ public interface MiniPrinter extends Demo {
     void printBitmapInFlash(int id);
 
     /**
+     * @param img
+     */
+    void printBitmap(BufferedImage img);
+
+    /**
      * @param mode
      * @param offset percentage of line
      * @param value
