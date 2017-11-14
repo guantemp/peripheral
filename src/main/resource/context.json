@@ -21,7 +21,8 @@
       "stop bits": 1,
       "parity": 0,
       "timeout": 350,
-      "read delay": 100
+      "read delay": 100,
+      "format":"58mm"
     },
     "network": {
       "name":"cc.foxtail.miniprinter.XprinterXp-h160n.class",
@@ -31,10 +32,12 @@
       "format":"42字符打印格式带切纸"
     },
     "parallel": {
-      "name":"cc.foxtail.miniprinter..class",
-      "alias":"海信76MM正式打印机",
+      "name":"cc.foxtail.miniprinter.Haixin760.class",
+      "alias":"海信76MM发票打印机",
       "port": "LPT1",
-      "format":"40黑标发票打印"
+      "timeout": 350,
+      "read delay": 100,
+      "format":"76MM黑标发票打印"
     },
     "usb": {
       "name": "usb打印",

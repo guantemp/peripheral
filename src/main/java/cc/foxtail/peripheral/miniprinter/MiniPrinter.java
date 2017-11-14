@@ -20,7 +20,6 @@ package cc.foxtail.peripheral.miniprinter;
 import cc.foxtail.peripheral.Demo;
 import cc.foxtail.peripheral.util.Align;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Set;
 
@@ -65,11 +64,6 @@ public interface MiniPrinter extends Demo {
      * open cash box
      */
     void openCashBox();
-
-    /**
-     * @param line parting line
-     */
-    void printPartingLine(PartingLine line);
 
     /**
      * @param num
@@ -127,21 +121,6 @@ public interface MiniPrinter extends Demo {
      */
     void execute(char[] instruction);
 
-    /**
-     *
-     */
-    enum PartingLine {
-        ASTERISK('*'), HORIZONTAL_LINE('-');
-        private char delimiter;
-
-        PartingLine(char delimiter) {
-            this.delimiter = delimiter;
-        }
-
-        public char delimiter() {
-            return delimiter;
-        }
-    }
     /**
      *
      */

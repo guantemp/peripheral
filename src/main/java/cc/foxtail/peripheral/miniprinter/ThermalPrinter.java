@@ -146,14 +146,6 @@ public class ThermalPrinter implements MiniPrinter, Observer {
     }
 
     /**
-     * @param line parting line
-     */
-    @Override
-    public void printPartingLine(PartingLine line) {
-
-    }
-
-    /**
      * @param num
      */
     @Override

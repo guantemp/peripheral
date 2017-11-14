@@ -36,7 +36,7 @@ public class LedCustomerDisplayTest extends TestCase {
     @Test
     public void testDemo() throws InterruptedException, NoSuchPortException, PortInUseException,
             UnsupportedCommOperationException, TooManyListenersException, IOException {
-        for (String s : Serial.listAllSerialPort())
+       /* for (String s : Serial.listAllSerialPort())
             System.out.print(s + " ");
         System.out.println();
         for (String s : Serial.listAvailableSerialPort())
@@ -45,5 +45,6 @@ public class LedCustomerDisplayTest extends TestCase {
         LedCustomerDisplay led = new LedCustomerDisplay(serial, "gb2312");
         led.open();
         led.demo();
+        */
     }
 }

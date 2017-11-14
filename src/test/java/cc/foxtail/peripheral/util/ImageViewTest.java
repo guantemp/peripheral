@@ -43,15 +43,19 @@ public class ImageViewTest {
 
     @Test
     public void testToMonochromeImage() throws IOException {
+        /*
         BufferedImage img = ImageIO.read(new File("d:/mvn/hp-logo.jpg"));
         ImageIO.write(ImageView.toMonochromeImage(img), "bmp", new File(
                 "d:/mvn/hp-logo.bmp"));
+                */
     }
 
     @Test
     public void testMappingImageToMiniPrinter() throws Exception {
+        /*
         BufferedImage img = ImageIO.read(new File("d:/mvn/look.bmp"));
         img = ImageView.adjustImageHeightAndWidthOf8Multiples(img);
         ImageView.mappingImageToMiniPrinter(img);
+        */
     }
 }
