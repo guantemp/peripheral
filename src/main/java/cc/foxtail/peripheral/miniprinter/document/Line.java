@@ -23,8 +23,8 @@ import java.util.Objects;
  * @since JDK8.0
  */
 public class Line implements Printable {
-    public static final Line DASHED=new Line('-');
-    public static final Line BLANK=new Line(' ');
+    public static final Line DASHED = new Line('-');
+    public static final Line BLANK = new Line(' ');
     private char symbol;
 
 

@@ -37,11 +37,11 @@ import java.util.Set;
  * @since JDK8.0
  */
 public class ThermalPrinter implements MiniPrinter, Observer {
+    protected int maxCharacter = 32;
+    protected Dimension maxFlashImageSize = new Dimension(384, 600);
     private boolean open;
     private OutputStream os;
     private byte[] status;
-    protected int maxCharacter=32;
-    protected Dimension maxFlashImageSize=new Dimension(384, 600);
 
     /**
      * Closes this output stream and releases any system resources associated

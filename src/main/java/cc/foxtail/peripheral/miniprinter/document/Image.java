@@ -17,8 +17,8 @@ package cc.foxtail.peripheral.miniprinter.document;
 
 /**
  * @author <a href="mailto:myis1000@gmail.com">guan xiangHuan</a>
- * @version 0.0.1 20171124
+ * @version 0.0.1 20171125
  * @since JDK8.0
  */
-public interface Printable {
+public class Image implements Printable {
 }
