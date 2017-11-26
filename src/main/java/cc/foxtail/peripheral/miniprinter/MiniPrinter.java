@@ -18,113 +18,17 @@
 package cc.foxtail.peripheral.miniprinter;
 
 import cc.foxtail.peripheral.Demo;
-import cc.foxtail.peripheral.util.Align;
+import cc.foxtail.peripheral.miniprinter.document.Document;
 
-import java.awt.image.BufferedImage;
-import java.util.Set;
+import java.util.Observer;
 
 /**
  * @author <a href="mailto:myis1000@gmail.com">guan xiangHuan</a>
- * @version 0.0.1 20171107
- * @since JDK7.0
+ * @version 0.0.3 20171126
+ * @since JDK8.0
  */
-public interface MiniPrinter extends Demo {
-    /**
-     * Closes this output stream and releases any system resources associated
-     * with this stream
-     */
-    void close();
-
-    /**
-     * half cut
-     */
-    void cutPaper();
-
-    /**
-     * @param img
-     */
-    void downloadBitmapToFlash(BufferedImage img);
-
-    /**
-     * @return
-     */
-    boolean isPaperOut();
-
-    /**
-     * open output stream and add listeren for input
-     */
-    void open();
-
-    /**
-     * clear buffer data and set default when the power is on
-     */
-    void init();
-
-    /**
-     * open cash box
-     */
-    void openCashBox();
-
-    /**
-     * @param num
-     */
-    void printBlankLine(int num);
-
-    /**
-     * Center print  UPC-A, UPC-E, EAN13, EAN8, CODE39, CODE93, CODE128, ITF
-     * QR
-     *
-     * @param height           barcode height default is 162, range is 1-255
-     * @param nHriFontPosition HRI character position ,0 does not print, 1 printed above the
-     *                         bar code, the bar code printed below 2, 3 are printed on the
-     *                         bottom, the default is 3
-     * @param value            print barcode value
-     */
-    void printBarcode(int height, int nHriFontPosition, Barcode value);
-
-    /**
-     * @param id
-     */
-    void printBitmapInFlash(int id);
-
-    /**
-     * @param img
-     */
-    void printBitmap(BufferedImage img);
-
-    /**
-     * @param mode
-     * @param offset percentage of line
-     * @param value
-     */
-    void print(Set<PrintMode> mode, int offset, String value);
-
-    /**
-     * @param mode
-     * @param align
-     * @param value
-     */
-    void print(Set<PrintMode> mode, Align align, String value);
-
-    /**
-     * @param value
-     */
-    void print(String value);
-
-    /**
-     * @param instruction
-     */
+public interface MiniPrinter extends Demo, Observer {
+    void print(Document document);
     void execute(byte[] instruction);
-
-    /**
-     * @param instruction
-     */
     void execute(char[] instruction);
-
-    /**
-     *
-     */
-    enum PrintMode {
-        DOUBLE_HEIGHT, DOUBLE_WIDTH, QUADRUPLE, REVERSE, THICK_UNDERLINE, THIN_UNDERLINE, UPSIDEDOWN, WHIRL
-    }
 }
