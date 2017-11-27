@@ -49,7 +49,7 @@ public class Barcode implements Printable {
      * @param barcode
      */
     public Barcode(BarcodeType type, String barcode) {
-        this(type, barcode, 60, 8, true);
+        this(type, barcode, 60, 6, true);
     }
 
     /**
@@ -58,7 +58,7 @@ public class Barcode implements Printable {
      * @param hri
      */
     public Barcode(BarcodeType type, String barcode, boolean hri) {
-        this(type, barcode, 60, 8, hri);
+        this(type, barcode, 60, 6, hri);
     }
 
     public int height() {

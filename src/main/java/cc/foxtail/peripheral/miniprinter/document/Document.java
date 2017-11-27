@@ -31,6 +31,10 @@ import java.util.*;
  * @since JDK8.0
  */
 public class Document {
+    public static final Document DEMO=new Document();
+    static{
+        DEMO.add(new Text());
+    }
     private List<Printable> printables = new ArrayList<>();
 
     /**

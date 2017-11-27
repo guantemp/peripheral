@@ -1,6 +1,4 @@
 /*
- * @(#}MiniPrinter.java
- *
  * Copyright 2017 www.foxtail.cc All rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,6 +27,8 @@ import java.util.Observer;
  */
 public interface MiniPrinter extends Demo, Observer {
     void print(Document document);
+
     void execute(byte[] instruction);
+
     void execute(char[] instruction);
 }

@@ -13,18 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cc.foxtail.peripheral.miniprinter.document;
+package cc.foxtail.peripheral.miniprinter.handle;
 
+import cc.foxtail.peripheral.miniprinter.document.Printable;
 
 /**
  * @author <a href="mailto:myis1000@gmail.com">guan xiangHuan</a>
- * @version 0.0.1 20171125
+ * @version 0.0.1 20171127
  * @since JDK8.0
  */
-public class QRCode implements Printable {
-    private QRCodeType type;
-    private String content;
-    public enum QRCodeType {
-        QRCODE, PDF417, DATAMATRIX
-    }
+public abstract class Handle<T extends Printable> {
+    public abstract byte[] toBytes();
 }
