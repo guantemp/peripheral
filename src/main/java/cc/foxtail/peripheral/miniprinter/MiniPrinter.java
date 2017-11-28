@@ -16,8 +16,15 @@
 package cc.foxtail.peripheral.miniprinter;
 
 import cc.foxtail.peripheral.Demo;
+import cc.foxtail.peripheral.communication.Communication;
 import cc.foxtail.peripheral.miniprinter.document.Document;
+import cc.foxtail.peripheral.miniprinter.document.Printable;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Iterator;
+import java.util.Objects;
+import java.util.Observable;
 import java.util.Observer;
 
 /**
@@ -25,10 +32,76 @@ import java.util.Observer;
  * @version 0.0.3 20171126
  * @since JDK8.0
  */
-public interface MiniPrinter extends Demo, Observer {
-    void print(Document document);
+public abstract class MiniPrinter implements Demo, Observer {
+    private Communication comm;
+    protected String encoding = "gbk";
+    protected int pixel;
 
-    void execute(byte[] instruction);
+    public void conectionTo(Communication comm) {
+        this.comm = Objects.requireNonNull(comm, "required comm");
+    }
 
-    void execute(char[] instruction);
+    public void registerHandle(){
+
+    }
+
+    public boolean isConectioned() {
+        return comm == null ? false : true;
+    }
+
+    public void print(Document document) {
+        if (isConectioned()) {
+            try {
+                comm.open();
+                for (Iterator<Printable> iter = document.iterator(); iter.hasNext(); ) {
+                }
+                comm.flush();
+                comm.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void execute(byte[] instruction) {
+        if (isConectioned()) {
+            try {
+                comm.open();
+                comm.write(instruction);
+                comm.flush();
+                comm.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public void execute(char[] instruction) {
+        try {
+            execute(String.valueOf(instruction).getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * This method is called whenever the observed object is changed. An
+     * application calls an <tt>Observable</tt> object's
+     * <code>notifyObservers</code> method to have all the object's
+     * observers notified of the change.
+     *
+     * @param o   the observable object.
+     * @param arg an argument passed to the <code>notifyObservers</code>
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
+
+    public void demo() {
+        if (isConectioned()) {
+            print(Document.DEMO);
+        }
+    }
 }

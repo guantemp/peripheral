@@ -40,7 +40,7 @@ public class Document {
     /**
      * @return
      */
-    public Iterator<Printable> printables() {
+    public Iterator<Printable> iterator() {
         return printables.iterator();
     }
 

@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cc.foxtail.peripheral.miniprinter.handle;
+package cc.foxtail.peripheral.miniprinter;
 
 import cc.foxtail.peripheral.miniprinter.document.Printable;
+
+import java.util.Objects;
 
 /**
  * @author <a href="mailto:myis1000@gmail.com">guan xiangHuan</a>
@@ -23,5 +25,9 @@ import cc.foxtail.peripheral.miniprinter.document.Printable;
  * @since JDK8.0
  */
 public abstract class Handle<T extends Printable> {
+    private T t;
+  public T get(){
+      return t;
+  }
     public abstract byte[] toBytes();
 }

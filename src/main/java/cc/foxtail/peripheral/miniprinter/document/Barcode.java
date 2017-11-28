@@ -93,7 +93,7 @@ public class Barcode implements Printable {
         return margin;
     }
 
-    public BarcodeType getType() {
+    public BarcodeType type() {
         return type;
     }
 
